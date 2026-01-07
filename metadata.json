@@ -1,0 +1,36 @@
+{
+  "name": "cirrax-knot",
+  "version": "0.0.0",
+  "author": "Cirrax GmbH",
+  "summary": "Puppet module to install and configure knot dns",
+  "license": "GPL-3.0",
+  "source": "https://github.com/cirrax/puppet-knot",
+  "project_page": "https://github.com/cirrax/puppet-knot",
+  "issues_url": "https://github.com/cirrax/puppet-knot/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=9.0.0 < 10.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "12",
+        "13"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "openvox",
+      "version_requirement": ">=5.0.0 < 9.0.0"
+    }
+  ],
+  "tags": [
+    "dns",
+    "dnssec",
+    "knot"
+  ]
+}
