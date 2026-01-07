@@ -1,0 +1,56 @@
+<%- | Array[String[1]]                   $params,
+      Hash[String[1],String[1]]          $index_elements,
+      Hash[String[1],Knot::Module]       $module         = {},
+      Optional[Knot::Server]             $server         = undef,
+      Optional[Knot::Xdp]                $xdp            = undef,
+      Optional[Knot::Control]            $control        = undef,
+      Optional[Array[Knot::Log]]         $log            = undef,
+      Optional[Knot::Statistics]         $statistics     = undef,
+      Optional[Knot::Database]           $database       = undef,
+      Optional[Array[Knot::Keystore]]    $keystore       = undef,
+      Optional[Array[Knot::Key]]         $key            = undef,
+      Optional[Array[Knot::Remote]]      $remote         = undef,
+      Optional[Array[Knot::Remotes]]     $remotes        = undef,
+      Optional[Array[Knot::Acl]]         $acl            = undef,
+      Optional[Array[Knot::Submission]]  $submission     = undef,
+      Optional[Array[Knot::Dnskey_sync]] $dnskey_sync    = undef,
+      Optional[Array[Knot::Policy]]      $policy         = undef,
+      Optional[Array[Knot::External]]    $external       = undef,
+      Optional[Array[Knot::Template]]    $template       = undef,
+      Optional[Array[Knot::Zone]]        $zone           = undef,
+      Array[String[1]]                   $clear          = [],
+      Array[String[1]]                   $first_includes = [],
+      Array[String[1]]                   $last_includes  = [],
+| -%>
+# Managed with puppet, do not edit manually
+# See knot.conf(5) or refer to the server documentation.
+<%- $first_includes.each | String[1] $i | { -%>
+include: <%= $i %>
+<%- } -%>
+<%- $clear.each | String[1] $i | { -%>
+clear: <%= $i %>
+<%- } -%>
+
+<%- $module.each | String[1] $n, Knot::Module $m | { -%>
+  <%- $m.each | $c | { -%>
+    <%- %><%= $n %>:
+    <%- %><%= epp('knot/config.epp', { 'prefix' => '-', 'trim' => 3, 'configs' => $c, 'firstelement' => 'id' }) -%>
+  <%- } -%>
+<%- } -%>
+
+<%- $params.each | String[1] $i | { -%>
+  <%- if getvar($i) { -%>
+    <%- %><%= regsubst($i, '_', '-') %>:
+    <%- if getvar($i) =~ Array { -%>
+      <%- getvar($i).each | $c | { -%>
+        <%- %><%= epp('knot/config.epp', { 'prefix' => '-', 'trim' => 3, 'configs' => $c, 'firstelement' => $index_elements[$i] }) -%>
+      <%- } -%>
+    <%- } else { -%>
+      <%- %><%= epp('knot/config.epp', { 'prefix' => '', 'trim' => 1, 'configs' => getvar($i) }) -%>
+    <%- } -%>
+  <%- } -%>
+<%- } -%>
+
+<%- $last_includes.each | String[1] $i | { -%>
+include: <%= $i %>
+<%- } -%>

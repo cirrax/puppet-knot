@@ -1,0 +1,67 @@
+---
+# data/common.yaml
+
+lookup_options:
+  knot::domains:
+    merge: 'hash'
+
+# some knot defaults:
+knot::server:
+  comment: 'default setting'
+  rundir: '/run/knot'
+  user: 'knot:knot'
+  automatic-acl: true
+
+knot::log:
+  - comment: 'default setting'
+    target: 'syslog'
+    any: 'info'
+
+knot::database:
+  comment: 'default setting'
+  storage: '/var/lib/knot'
+
+knot::template:
+  - comment: 'default template'
+    id: 'default'
+    storage: '/var/lib/knot'
+    file: '%s.zone'
+
+# the parameter names we print (if not undef) into the config file
+knot::params:
+  - 'server'
+  - 'xdp'
+  - 'control'
+  - 'log'
+  - 'statistics'
+  - 'database'
+  - 'keystore'
+  - 'key'
+  - 'remote'
+  - 'remotes'
+  - 'acl'
+  - 'submission'
+  - 'dnskey_sync' 
+  - 'policy'
+  - 'external'
+  - 'template'
+  - 'zone'
+
+# the index that needs to print as first element
+# in the config file, if not set, the comment will
+# be used as a fallback
+knot::index_elements:
+ module: 'id'
+ log: 'target'
+ keystore: 'id'
+ key: 'id'
+ remote: 'id'
+ remotes: 'id'
+ acl: 'id'
+ submission: 'id'
+ dnskey_sync: 'id'
+ policy: 'id'
+ external: 'id'
+ template: 'id'
+ zone: 'domain'
+

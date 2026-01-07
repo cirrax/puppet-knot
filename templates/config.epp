@@ -1,0 +1,15 @@
+<%- | Integer $trim,
+      Hash[String[1], Any] $configs,
+      String[0,1]          $prefix       = '',
+      String[1]            $firstelement = 'comment',
+| -%>
+<%- $first = $trim - $prefix.length() -%>
+<%= String('', "%${first}s") %><%= $prefix %> <%= $firstelement %>: "<%= pick($configs[$firstelement], 'n/a') %>"
+<%- $configs.delete($firstelement).each | String[1] $k, Any $v | { -%>
+  <%- if $v =~ String { -%>
+    <%- %><%= String('', "%${trim}s") %> <%= $k %>: "<%= $v %>"
+  <%- } elsif $v =~ Undef { -%>
+  <%- } else { -%>
+    <%- %><%= String('', "%${trim}s") %> <%= $k %>: <%= $v %>
+  <%- } -%> 
+<%- } -%> 
