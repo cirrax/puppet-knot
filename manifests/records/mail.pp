@@ -136,7 +136,7 @@ define knot::records::mail (
         rname       => $_rname,
         rttl        => $_ttl,
         rtype       => $sr,
-        rcontent    => ['"', ["v=${$_spf['version']}", $_spf['mechanism'], $_spf['modifier']].join('" "'),'"'].join(''),
+        rcontent    => ['"', ["v=${$_spf['version']}", $_spf['mechanism'], $_spf['modifier']].join(' '),'"'].join(''),
       }
     }
   }
