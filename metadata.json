@@ -1,6 +1,6 @@
 {
   "name": "cirrax-knot",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Cirrax GmbH",
   "summary": "Puppet module to install and configure knot dns",
   "license": "GPL-3.0",
