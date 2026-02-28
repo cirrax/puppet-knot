@@ -23,7 +23,7 @@ This said, the following manifest is enough:
 include 'knot'
 ```
 
-A domain configuration could look like: 
+A domain configuration could look like:
 ```yaml
 knot::domains:
   exampe.org:

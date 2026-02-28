@@ -1,0 +1,10 @@
+[Unit]
+Description=make knot backup into <%= $dir %>
+
+[Service]
+Type=oneshot
+ExecStartPre=rsync --archive --delete --remove-source-files <%= $dir %>/current/./ <%= $dir %>/previous
+ExecStart=knotc zone-backup +backupdir <%= $dir %>/current
+<%- if $list_keys_script { -%>
+ExecStartPost=<%= $list_keys_script %> <%= $key_stati_file %>
+<%- } -%>

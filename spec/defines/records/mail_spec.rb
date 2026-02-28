@@ -40,7 +40,7 @@ describe 'knot::records::mail' do
             .with_rname(params[:rname])
             .with_rttl(params[:ttl])
             .with_rtype(sr)
-            .with_rcontent("\"v=#{params[:spf]['version']}\" \"#{params[:spf]['mechanism'].join('" "')}\" \"#{params[:spf]['modifier'].join('" "')}\"")
+            .with_rcontent("\"v=#{params[:spf]['version']} #{params[:spf]['mechanism'].join(' ')} #{params[:spf]['modifier'].join(' ')}\"")
         end
       end
     }
@@ -135,7 +135,7 @@ describe 'knot::records::mail' do
           .with_rname('_dmarc')
           .with_rttl(params[:ttl])
           .with_rtype('TXT')
-          .with_rcontent("\"#{params[:dmarc_policy].join(' ')}\"")
+          .with_rcontent("\"#{params[:dmarc_policy].join(';')}\"")
       end
     }
 

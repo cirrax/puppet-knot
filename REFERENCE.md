@@ -7,6 +7,7 @@
 ### Classes
 
 * [`knot`](#knot): main class to configure knot dns
+* [`knot::backup`](#knot--backup): class to create and execute regular backups to the filesystem based on systemd timer  this class is fully independent of the rest of this pup
 * [`knot::records::defaults::caa`](#knot--records--defaults--caa): default values for knot::records::caa
 * [`knot::records::defaults::mail`](#knot--records--defaults--mail): default values for knot::records::mail
 * [`knot::records::defaults::srv`](#knot--records--defaults--srv): defaults for srv records
@@ -393,6 +394,86 @@ see there for parameters to use per domain.
 Remark: this parameter is hiera hash merged.
 
 Default value: `{}`
+
+### <a name="knot--backup"></a>`knot::backup`
+
+class to create and execute regular backups
+to the filesystem based on systemd timer
+
+this class is fully independent of the
+rest of this puppet module
+
+#### Parameters
+
+The following parameters are available in the `knot::backup` class:
+
+* [`dir`](#-knot--backup--dir)
+* [`owner`](#-knot--backup--owner)
+* [`group`](#-knot--backup--group)
+* [`mode`](#-knot--backup--mode)
+* [`timer`](#-knot--backup--timer)
+* [`list_keys_script`](#-knot--backup--list_keys_script)
+* [`key_stati_file`](#-knot--backup--key_stati_file)
+
+##### <a name="-knot--backup--dir"></a>`dir`
+
+Data type: `Stdlib::Absolutepath`
+
+the directory where backups are saved
+
+Default value: `'/var/lib/knot-backup'`
+
+##### <a name="-knot--backup--owner"></a>`owner`
+
+Data type: `String[1]`
+
+owner of the backup  dir
+
+Default value: `'knot'`
+
+##### <a name="-knot--backup--group"></a>`group`
+
+Data type: `String[1]`
+
+group of the backup dir
+
+Default value: `'knot'`
+
+##### <a name="-knot--backup--mode"></a>`mode`
+
+Data type: `String[1]`
+
+mode of the backup directory
+
+Default value: `'0700'`
+
+##### <a name="-knot--backup--timer"></a>`timer`
+
+Data type: `Array[String[1]]`
+
+Array of lines to add to the systemd timer in the
+timer section.
+
+Default value: `['OnCalendar=*-*-* 01:00:00', 'Persistent=true']`
+
+##### <a name="-knot--backup--list_keys_script"></a>`list_keys_script`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+if set, a script is created there and executed which
+writes all current keys and their status into
+the file $key_stati_file
+
+Default value: `undef`
+
+##### <a name="-knot--backup--key_stati_file"></a>`key_stati_file`
+
+Data type: `Stdlib::Absolutepath`
+
+where we write the current key stati if list_keys_script
+is set
+
+Default value: `"${dir}/current-key-list.txt"`
 
 ### <a name="knot--records--defaults--caa"></a>`knot::records::defaults::caa`
 

@@ -1,0 +1,8 @@
+[Unit]
+Description=run knot-backup.service
+
+[Timer]
+<%= $timer.join("\n") %>
+
+[Install]
+WantedBy=timers.target
