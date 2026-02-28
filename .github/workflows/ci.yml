@@ -26,24 +26,24 @@ jobs:
         uses: actions/checkout@v4
       - name: run validate
         run: |
-          podman run -it --rm -v $PWD:/repo:Z ${VOXBOX} validate
+          podman run --tty --rm -v $PWD:/repo:Z ${VOXBOX} validate
       - name: run check
         run: |
-          podman run -it --rm -v $PWD:/repo:Z ${VOXBOX} check
+          podman run --tty --rm -v $PWD:/repo:Z ${VOXBOX} check
       - name: run lint
         run: |
-          podman run -it --rm -v $PWD:/repo:Z ${VOXBOX} lint
+          podman run --tty --rm -v $PWD:/repo:Z ${VOXBOX} lint
       - name: run yamllint
         run: |
-          podman run -it --rm -v $PWD:/repo:Z --entrypoint yamllint ${VOXBOX} .
+          podman run --tty --rm -v $PWD:/repo:Z --entrypoint yamllint ${VOXBOX} .
       - name: run rubocop
         run: |
-          podman run -it --rm -v $PWD:/repo:Z ${VOXBOX} rubocop
+          podman run --tty --rm -v $PWD:/repo:Z ${VOXBOX} rubocop
       - name: check syntax
         run: |
-          podman run -it --rm -v $PWD:/repo:Z ${VOXBOX} strings:validate:reference
+          podman run --tty --rm -v $PWD:/repo:Z ${VOXBOX} strings:validate:reference
       - name: run spec tests
         run: |
-          podman run -it --rm -v $PWD:/repo:Z ${VOXBOX} fixtures:clean
-          podman run -it --rm -v $PWD:/repo:Z ${VOXBOX} fixtures:prep
-          podman run -it --rm -v $PWD:/repo:Z ${VOXBOX} spec
+          podman run --tty --rm -v $PWD:/repo:Z ${VOXBOX} fixtures:clean
+          podman run --tty --rm -v $PWD:/repo:Z ${VOXBOX} fixtures:prep
+          podman run --tty --rm -v $PWD:/repo:Z ${VOXBOX} spec
