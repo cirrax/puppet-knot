@@ -8,7 +8,7 @@ describe 'knot' do
       service_name: 'knot',
       service_ensure: 'running',
       service_enable: true,
-      packages: ['knot', 'knot-keymgr'],
+      packages: %w[knot knot-keymgr],
       config_file: '/etc/knot/knot.conf',
       config_dir: '/etc/knot/conf.d',
       owner: 'root',
