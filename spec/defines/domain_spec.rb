@@ -9,7 +9,8 @@ describe 'knot::domain' do
       zone_records: [],
       zone_nameservers_ttl: 3600,
       zone_nameservers: [],
-      zone_subzones: {} }
+      zone_subzones: {},
+      local_subzones: [] }
   end
 
   shared_examples 'knot::domain shared examples' do
@@ -22,6 +23,7 @@ describe 'knot::domain' do
         is_expected.to contain_knot_zone(params[:domain])
           .with_zone_ensure(params[:ensure])
           .with_manage_records(params[:zone_manage_records])
+          .with_local_subzones(params[:local_subzones])
         if params[:ensure] == 'present'
           i = 0
           params[:zone_records].each do |r|
@@ -103,7 +105,8 @@ describe 'knot::domain' do
                                  manage_zone: true,
                                  zone_records: [{ rname: 'test', rcontent: '1.1.1.1' }, { rname: 'test', rtype: 'AAAA', rcontent: '::1' }],
                                  zone_nameservers: ['ns1.example.org.', 'ns2.example.org.'],
-                                 zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } }
+                                 zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } },
+                                 local_subzones: %w[blah fasel]
                                })
         end
 
@@ -118,7 +121,8 @@ describe 'knot::domain' do
                                  manage_zone: true,
                                  zone_records: [{ rname: 'test', rcontent: '1.1.1.1' }, { rname: 'test', rtype: 'AAAA', rcontent: '::1' }],
                                  zone_nameservers: ['ns1.example.org.', 'ns2.example.org.'],
-                                 zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } } })
+                                 zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } },
+                                 local_subzones: %w[blah fasel] })
         end
 
         it_behaves_like 'knot::domain shared examples'

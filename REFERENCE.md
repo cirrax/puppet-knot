@@ -1149,6 +1149,7 @@ The following parameters are available in the `knot::domain` defined type:
 * [`zone_nameservers`](#-knot--domain--zone_nameservers)
 * [`zone_nameservers_ttl`](#-knot--domain--zone_nameservers_ttl)
 * [`zone_subzones`](#-knot--domain--zone_subzones)
+* [`local_subzones`](#-knot--domain--local_subzones)
 
 ##### <a name="-knot--domain--ensure"></a>`ensure`
 
@@ -1711,10 +1712,27 @@ Default value: `3600`
 
 Data type: `Hash[String[1],Knot::Subzone]`
 
-Hash of subzones to establish
+Hash of subzones to establish by manually set NS/DS records.
 remark: only relevant if $manage_zone set to true
 
 Default value: `{}`
+
+##### <a name="-knot--domain--local_subzones"></a>`local_subzones`
+
+Data type: `Array[String[1]]`
+
+Array of local subzones (either fully qualified with a dot at the end, or as
+an name withiout dot) to add glue records automatically.
+Supported glue records are NS (nameserver) and DS (dnssec)
+NS records are extracted using knotc, DS records are generated using
+keymgr.
+Restriction for this to work:
+- the two zones are managed on the same server
+- manage_zone is set to true for both domains
+Any violation of above restrictions is ignored.
+remark: only relevant if $manage_zone set to true
+
+Default value: `[]`
 
 ### <a name="knot--records--caa"></a>`knot::records::caa`
 
@@ -2310,6 +2328,7 @@ resource knot_zone_private
 The following parameters are available in the `knot_zone` type.
 
 * [`content_filter`](#-knot_zone--content_filter)
+* [`local_subzones`](#-knot_zone--local_subzones)
 * [`manage_records`](#-knot_zone--manage_records)
 * [`name`](#-knot_zone--name)
 * [`show_diff`](#-knot_zone--show_diff)
@@ -2328,6 +2347,13 @@ The following parameters are available in the `knot_zone` type.
 regex for filtering out unwanted records by default filters dnssec records and zonemd, assuming you use autogeneration
 
 Default value: `^.+ [0-9]+ (RRSIG|NSEC|DNSKEY|CDNSKEY|CDS|ZONEMD) .*$`
+
+##### <a name="-knot_zone--local_subzones"></a>`local_subzones`
+
+local subzones for which we query NS ans CDS records and add dem to the local zone, only works if the subzone is
+configured on current node
+
+Default value: `[]`
 
 ##### <a name="-knot_zone--manage_records"></a>`manage_records`
 
@@ -2433,6 +2459,7 @@ Default value: `present`
 The following parameters are available in the `knot_zone_private` type.
 
 * [`content_filter`](#-knot_zone_private--content_filter)
+* [`local_subzones`](#-knot_zone_private--local_subzones)
 * [`manage_records`](#-knot_zone_private--manage_records)
 * [`name`](#-knot_zone_private--name)
 * [`provider`](#-knot_zone_private--provider)
@@ -2443,6 +2470,13 @@ The following parameters are available in the `knot_zone_private` type.
 regex for filtering out unwanted records by default filters dnssec records assuming you use autosigning
 
 Default value: `^.+ [0-9]+ (RRSIG|NSEC|DNSKEY|CDNSKEY|CDS) .*$`
+
+##### <a name="-knot_zone_private--local_subzones"></a>`local_subzones`
+
+local subzones for which we query NS ans CDS records and add dem to the local zone, only works if the subzone is
+configured on current node
+
+Default value: `[]`
 
 ##### <a name="-knot_zone_private--manage_records"></a>`manage_records`
 
