@@ -40,8 +40,16 @@
 #  if set, adds a SRV record for imaps (format see
 #  autodiscover example above).
 #  default from knot::records::defaults::mail
+# @param imap
+#  if set, adds a SRV record for imap (format see
+#  autodiscover example above).
+#  default from knot::records::defaults::mail
 # @param pop3s 
 #  if set, adds a SRV record for pop3s (format see
+#  autodiscover example above).
+#  default from knot::records::defaults::mail
+# @param pop3 
+#  if set, adds a SRV record for pop3 (format see
 #  autodiscover example above).
 #  default from knot::records::defaults::mail
 # @param caa
@@ -88,7 +96,9 @@ define knot::records::mail (
   Optional[String[1]]                        $autoconfig          = undef,
   Optional[Array[Knot::Record::Srv]]         $submission          = undef,
   Optional[Array[Knot::Record::Srv]]         $imaps               = undef,
+  Optional[Array[Knot::Record::Srv]]         $imap                = undef,
   Optional[Array[Knot::Record::Srv]]         $pop3s               = undef,
+  Optional[Array[Knot::Record::Srv]]         $pop3                = undef,
   Optional[Array[Knot::Record::Caa]]         $caa                 = undef,
   Array[Enum['SPF','TXT']]                   $spf_rtypes          = ['SPF','TXT'],
   Optional[Knot::Record::Spf]                $spf                 = undef,
@@ -107,7 +117,9 @@ define knot::records::mail (
   $_caa = pick($caa, $knot::records::defaults::mail::caa)
   $_submission = pick($submission, $knot::records::defaults::mail::submission)
   $_imaps = pick($imaps, $knot::records::defaults::mail::imaps)
+  $_imap = pick($imap, $knot::records::defaults::mail::imap)
   $_pop3s = pick($pop3s, $knot::records::defaults::mail::pop3s)
+  $_pop3 = pick($pop3, $knot::records::defaults::mail::pop3)
   $_autodiscover = pick($autodiscover, $knot::records::defaults::mail::autodiscover)
   $_autoconfig = pick($autoconfig, $knot::records::defaults::mail::autoconfig, false)
   $_spf = pick($spf, $knot::records::defaults::mail::spf, false)
@@ -178,11 +190,25 @@ define knot::records::mail (
     service     => [{ 'port' => 'imaps', 'proto' => 'tcp' }],
   }
 
+  knot::records::srv { "imap ${title}":
+    target_zone => $_target_zone,
+    rname       => $_rname,
+    srv         => $_imap,
+    service     => [{ 'port' => 'imap', 'proto' => 'tcp' }],
+  }
+
   knot::records::srv { "pop3s ${title}":
     target_zone => $_target_zone,
     rname       => $_rname,
     srv         => $_pop3s,
     service     => [{ 'port' => 'pop3s', 'proto' => 'tcp' }],
+  }
+
+  knot::records::srv { "pop3 ${title}":
+    target_zone => $_target_zone,
+    rname       => $_rname,
+    srv         => $_pop3,
+    service     => [{ 'port' => 'pop3', 'proto' => 'tcp' }],
   }
 
   $_dkim_keys.each | String[1] $k, Array[String[1]] $v | {
