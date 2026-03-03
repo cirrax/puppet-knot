@@ -1155,7 +1155,8 @@ The following parameters are available in the `knot::domain` defined type:
 
 Data type: `Enum['absent', 'present']`
 
-
+if set to absent, domain is removed, including all
+dnssec keys associated with the domain.
 
 Default value: `'present'`
 
