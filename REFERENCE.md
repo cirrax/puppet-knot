@@ -519,7 +519,9 @@ The following parameters are available in the `knot::records::defaults::mail` cl
 * [`autoconfig`](#-knot--records--defaults--mail--autoconfig)
 * [`submission`](#-knot--records--defaults--mail--submission)
 * [`imaps`](#-knot--records--defaults--mail--imaps)
+* [`imap`](#-knot--records--defaults--mail--imap)
 * [`pop3s`](#-knot--records--defaults--mail--pop3s)
+* [`pop3`](#-knot--records--defaults--mail--pop3)
 * [`caa`](#-knot--records--defaults--mail--caa)
 * [`spf`](#-knot--records--defaults--mail--spf)
 * [`dkim_keys`](#-knot--records--defaults--mail--dkim_keys)
@@ -587,11 +589,29 @@ autodiscover example above).
 
 Default value: `[]`
 
+##### <a name="-knot--records--defaults--mail--imap"></a>`imap`
+
+Data type: `Array[Knot::Record::Srv]`
+
+if set, adds a SRV record for imap (format see
+autodiscover example above).
+
+Default value: `[]`
+
 ##### <a name="-knot--records--defaults--mail--pop3s"></a>`pop3s`
 
 Data type: `Array[Knot::Record::Srv]`
 
 if set, adds a SRV record for pop3s (format see
+autodiscover example above).
+
+Default value: `[]`
+
+##### <a name="-knot--records--defaults--mail--pop3"></a>`pop3`
+
+Data type: `Array[Knot::Record::Srv]`
+
+if set, adds a SRV record for pop3 (format see
 autodiscover example above).
 
 Default value: `[]`
@@ -1808,7 +1828,9 @@ The following parameters are available in the `knot::records::mail` defined type
 * [`autoconfig`](#-knot--records--mail--autoconfig)
 * [`submission`](#-knot--records--mail--submission)
 * [`imaps`](#-knot--records--mail--imaps)
+* [`imap`](#-knot--records--mail--imap)
 * [`pop3s`](#-knot--records--mail--pop3s)
+* [`pop3`](#-knot--records--mail--pop3)
 * [`caa`](#-knot--records--mail--caa)
 * [`spf_rtypes`](#-knot--records--mail--spf_rtypes)
 * [`spf`](#-knot--records--mail--spf)
@@ -1896,11 +1918,31 @@ default from knot::records::defaults::mail
 
 Default value: `undef`
 
+##### <a name="-knot--records--mail--imap"></a>`imap`
+
+Data type: `Optional[Array[Knot::Record::Srv]]`
+
+if set, adds a SRV record for imap (format see
+autodiscover example above).
+default from knot::records::defaults::mail
+
+Default value: `undef`
+
 ##### <a name="-knot--records--mail--pop3s"></a>`pop3s`
 
 Data type: `Optional[Array[Knot::Record::Srv]]`
 
 if set, adds a SRV record for pop3s (format see
+autodiscover example above).
+default from knot::records::defaults::mail
+
+Default value: `undef`
+
+##### <a name="-knot--records--mail--pop3"></a>`pop3`
+
+Data type: `Optional[Array[Knot::Record::Srv]]`
+
+if set, adds a SRV record for pop3 (format see
 autodiscover example above).
 default from knot::records::defaults::mail
 

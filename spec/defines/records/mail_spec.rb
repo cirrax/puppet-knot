@@ -10,7 +10,9 @@ describe 'knot::records::mail' do
       submission: [],
       autodiscover: [],
       imaps: [],
+      imap: [],
       pop3s: [],
+      pop3: [],
       dkim_keys: {},
       rname: '.',
       spf_rtypes: %w[SPF TXT], }
@@ -88,11 +90,27 @@ describe 'knot::records::mail' do
     }
 
     it {
+      is_expected.to contain_knot__records__srv("imap #{title}")
+        .with_target_zone(params[:target_zone])
+        .with_rname(params[:rname])
+        .with_srv(params[:imap])
+        .with_service([{ 'port' => 'imap', 'proto' => 'tcp' }])
+    }
+
+    it {
       is_expected.to contain_knot__records__srv("pop3s #{title}")
         .with_target_zone(params[:target_zone])
         .with_rname(params[:rname])
         .with_srv(params[:pop3s])
         .with_service([{ 'port' => 'pop3s', 'proto' => 'tcp' }])
+    }
+
+    it {
+      is_expected.to contain_knot__records__srv("pop3 #{title}")
+        .with_target_zone(params[:target_zone])
+        .with_rname(params[:rname])
+        .with_srv(params[:pop3])
+        .with_service([{ 'port' => 'pop3', 'proto' => 'tcp' }])
     }
 
     it {
@@ -176,6 +194,9 @@ describe 'knot::records::mail' do
             autoconfig: 'autoconfig.somewhere.org',
             submission: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 993, 'target' => 'mail.some.org' }],
             pop3s: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 40, 'target' => 'mail.some.org' }],
+            pop3: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 23, 'target' => 'mail.blah.org' }],
+            imaps: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 41, 'target' => 'mail.some.org' }],
+            imap: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 24, 'target' => 'mail.blah.org' }],
             caa: [{ 'flags' => 0, 'tag' => 'issue', 'value' => 'some.org' }],
             spf: { 'version' => 'spf1', 'mechanism' => ['ip4:127.0.0.1'], 'modifier' => ['-all'] },
             dkim_keys: { 'mykey' => ['v=DKIM1', 'g=*', 'k=rsa', 'p=***pubkey***'] },
@@ -201,6 +222,9 @@ describe 'knot::records::mail' do
             autoconfig: 'autoconfig.somewhere.org',
             submission: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 993, 'target' => 'mail.some.org' }],
             pop3s: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 40, 'target' => 'mail.some.org' }],
+            pop3: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 23, 'target' => 'mail.blah.org' }],
+            imaps: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 40, 'target' => 'mail.some.org' }],
+            imap: [{ 'priority' => 10, 'weight' => 0, 'target_port' => 23, 'target' => 'mail.blah.org' }],
             caa: [{ 'flags' => 0, 'tag' => 'issue', 'value' => 'some.org' }],
             spf: { 'version' => 'spf1', 'mechanism' => ['ip4:127.0.0.1'], 'modifier' => ['-all'] },
             dkim_keys: { 'mykey' => ['v=DKIM1', 'g=*', 'k=rsa', 'p=***pubkey***'] },

@@ -26,8 +26,14 @@
 # @param imaps
 #  if set, adds a SRV record for imaps (format see
 #  autodiscover example above).
+# @param imap
+#  if set, adds a SRV record for imap (format see
+#  autodiscover example above).
 # @param pop3s 
 #  if set, adds a SRV record for pop3s (format see
+#  autodiscover example above).
+# @param pop3 
+#  if set, adds a SRV record for pop3 (format see
 #  autodiscover example above).
 # @param caa
 #  caa records to create (using define knot::records::caa)
@@ -64,7 +70,9 @@ class knot::records::defaults::mail (
   Optional[String[1]]                $autoconfig          = undef,
   Array[Knot::Record::Srv]           $submission          = [],
   Array[Knot::Record::Srv]           $imaps               = [],
+  Array[Knot::Record::Srv]           $imap                = [],
   Array[Knot::Record::Srv]           $pop3s               = [],
+  Array[Knot::Record::Srv]           $pop3                = [],
   Array[Knot::Record::Caa]           $caa                 = [],
   Optional[Knot::Record::Spf]        $spf                 = undef,
   Hash[String[1],Array[String[1]]]   $dkim_keys           = {},
