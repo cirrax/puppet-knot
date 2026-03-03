@@ -8,7 +8,7 @@ Puppet::Type.type(:knot_zone_private).provide(
 ) do
   desc "A provider for the resource type `knot_zone`,
         which manages a zone on knot dns
-        using the knotc command."
+        using the knotc and keymgr command."
 
   commands knotc: 'knotc'
   commands keymgr: 'keymgr'
@@ -48,6 +48,9 @@ Puppet::Type.type(:knot_zone_private).provide(
 
   def destroy
     knotc knotc_options, 'zone-purge', resource[:name]
+    keymgr(resource[:name], list).split("\n").each do |k|
+      keymgr resource[:name], 'delete', k.split[0]
+    end
   end
 
   def content=(content)
@@ -104,9 +107,10 @@ Puppet::Type.type(:knot_zone_private).provide(
   end
 
   def exists?
-    # knotc(knotc_options, 'zone-read', resource[:name]).split("\n").each do |line|
-    #    return true if line == resource[:name]
-    # end
-    true
+    re_match = %r{^\[#{resource[:name]}.\]}
+    knotc(knotc_options, 'zone-status').split("\n").each do |line|
+      return true if re_match.match(line)
+    end
+    false
   end
 end

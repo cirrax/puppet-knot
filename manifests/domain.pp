@@ -5,6 +5,8 @@
 # https://www.knot-dns.cz/docs/latest/html/reference.html#zone-section
 #
 # @param ensure
+#   if set to absent, domain is removed, including all
+#   dnssec keys associated with the domain.
 # @param domain
 #   the domain to manage
 # @param comment
