@@ -40,6 +40,25 @@ Puppet::Type.newtype(:knot_zone_private) do
     defaultto :false
   end
 
+  newparam(:local_subzones) do
+    desc 'local subzones for which we query NS ans CDS records and add dem to the local zone, only works if the subzone is configured on current node'
+    defaultto []
+    validate do |value|
+      raise ArgumentError, 'local_subzones needs to be an array' unless value.is_a?(Array)
+    end
+
+    munge do |value|
+      re_dom = %r{\.$}
+      value.map do |v|
+        if re_dom.match(v)
+          v
+        else
+          "#{v}.#{@resource[:name]}."
+        end
+      end
+    end
+  end
+
   newproperty(:content) do
     desc "Content (records) of the zone. This must match the output of 'knotc zone-read ZONE|sort'."
 
@@ -67,5 +86,11 @@ Puppet::Type.newtype(:knot_zone_private) do
   end
   autorequire(:knot_zone) do
     # placeholder
+  end
+
+  autorequire(:knot_zone_private) do
+    self[:local_subzones].map do |d|
+      d.gsub(%r{\.$}, '')
+    end
   end
 end

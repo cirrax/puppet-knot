@@ -11,9 +11,37 @@ Puppet::Type.type(:knot_zone_private).provide(
         using the knotc command."
 
   commands knotc: 'knotc'
+  commands keymgr: 'keymgr'
 
   def knotc_options
     []
+  end
+
+  def glue_records
+    # get the CDS and NS records for all specified subdomains
+    records = []
+    resource[:local_subzones].each do |subzone|
+      begin
+        r = keymgr(subzone, 'ds')
+      rescue StandardError
+        # ignore if no keys are available for zone
+      else
+        records += r.split("\n").map do |c|
+          "#{subzone} 3600 DS #{c.gsub(%r{^.* DS }, '').upcase}"
+        end
+      end
+
+      begin
+        r = knotc(knotc_options, 'zone-read', subzone, subzone, 'NS')
+      rescue StandardError
+        # ignore if no NS are available for zone (or zone not available)
+      else
+        records += r.split("\n").map do |c|
+          c.gsub(%r{^\[#{subzone}\] }, '')
+        end
+      end
+    end
+    records
   end
 
   def create; end
@@ -29,7 +57,7 @@ Puppet::Type.type(:knot_zone_private).provide(
     re_soa = %r{^[0-9]+ SOA .+ .+ _SERIAL_ [0-9]+ [0-9]+ [0-9]+ [0-9]+$}
     @serial ||= 0
 
-    should_split = content.split("\n")
+    should_split = (content.split("\n") - ['changing glue records']) + glue_records
     begin
       knotc(knotc_options, 'zone-begin', resource[:name])
       (@records - should_split).each do |r|
@@ -67,7 +95,12 @@ Puppet::Type.type(:knot_zone_private).provide(
         s
       end
     end).compact
-    "#{@records.sort.join("\n")}\n"
+    glues = glue_records
+    if (glues & @records) == glues
+      "#{(@records - glues).sort.join("\n")}\n"
+    else
+      "#{((@records - glues) + ['changing glue records']).sort.join("\n")}\n"
+    end
   end
 
   def exists?

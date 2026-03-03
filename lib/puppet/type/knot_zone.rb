@@ -107,6 +107,14 @@ Puppet::Type.newtype(:knot_zone) do
     end
   end
 
+  newparam(:local_subzones) do
+    desc 'local subzones for which we query NS ans CDS records and add dem to the local zone, only works if the subzone is configured on current node'
+    defaultto []
+    validate do |value|
+      raise ArgumentError, 'local_subzones needs to be an array' unless value.is_a?(Array)
+    end
+  end
+
   def soa_record
     # create the soa record and set serial to +1 since we want to increase anyway
     soa = [self['soa_mname'], self['soa_rname'], '_SERIAL_', self['soa_refresh'], self['soa_retry'], self['soa_expire'], self['soa_minttl']].join(' ')
@@ -144,6 +152,7 @@ Puppet::Type.newtype(:knot_zone) do
     %i[name
        content_filter
        show_diff
+       local_subzones
        manage_records].each do |p|
       knot_zone_private_opts[p] = self[p] unless self[p].nil?
     end
@@ -167,7 +176,7 @@ Puppet::Type.newtype(:knot_zone) do
     [catalog.resource("Knot_zone_private[#{self[:name]}]")]
   end
 
-  # autorequire the knot class
+  # autorequire the knot service
   autorequire(:service) do
     ['knot']
   end

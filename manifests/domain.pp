@@ -165,7 +165,18 @@
 #   ttl to use for $zone_nameservers entries   
 #   remark: only relevant if $manage_zone set to true
 # @param zone_subzones
-#   Hash of subzones to establish
+#   Hash of subzones to establish by manually set NS/DS records.
+#   remark: only relevant if $manage_zone set to true
+# @param local_subzones
+#   Array of local subzones (either fully qualified with a dot at the end, or as
+#   an name withiout dot) to add glue records automatically.
+#   Supported glue records are NS (nameserver) and DS (dnssec)
+#   NS records are extracted using knotc, DS records are generated using
+#   keymgr.
+#   Restriction for this to work:
+#   - the two zones are managed on the same server
+#   - manage_zone is set to true for both domains
+#   Any violation of above restrictions is ignored. 
 #   remark: only relevant if $manage_zone set to true
 #
 define knot::domain (
@@ -236,6 +247,7 @@ define knot::domain (
   Array[String[1]]                                                      $zone_nameservers     = [],
   Integer                                                               $zone_nameservers_ttl = 3600,
   Hash[String[1],Knot::Subzone]                                         $zone_subzones        = {},
+  Array[String[1]]                                                      $local_subzones       = [],
 ) {
   knot::add_conf { $domain:
     ensure                   => $ensure,
@@ -306,6 +318,7 @@ define knot::domain (
       soa_retry      => $zone_soa_retry,
       soa_expire     => $zone_soa_expire,
       soa_minttl     => $zone_soa_minttl,
+      local_subzones => $local_subzones,
     }
   }
   if $manage_zone and $ensure == 'present' {
