@@ -1,7 +1,12 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.2.0 (3 March 2026)
+## Version: 0.2.1 (3 March 2026)
+* Merge pull request #4 from cirrax/dev_cirrax ([6109c28](https://github.com/cirrax/puppet-knot/commit/6109c28efff5b2030437c110ba04d1cfd56fafe0))
+* add pop3 and imap srv records for email ([07b51e6](https://github.com/cirrax/puppet-knot/commit/07b51e63238c883381c7f49e13642b32838d33dd))
+
+## Version: v0.2.0 (3 March 2026)
+* Release v0.2.0 ([e46a39e](https://github.com/cirrax/puppet-knot/commit/e46a39e6a0156e16608b70f54f68126cbde93cb1))
 * Merge pull request #3 from cirrax/dev_cirrax ([ac24cf8](https://github.com/cirrax/puppet-knot/commit/ac24cf8564a92d014857758a7667ee3cb2657fed))
 * fix ensure absent for domain ([d442245](https://github.com/cirrax/puppet-knot/commit/d4422454cc6f4b9f8b9efb8feb8666e76520cf0a))
 * Merge pull request #2 from cirrax/dev_cirrax ([b56ff23](https://github.com/cirrax/puppet-knot/commit/b56ff23cb30cb0b69d4774a6b43e8e9be6862421))
