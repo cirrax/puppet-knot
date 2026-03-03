@@ -1,7 +1,14 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.1.0 (28 February 2026)
+## Version: 0.2.0 (3 March 2026)
+* Merge pull request #3 from cirrax/dev_cirrax ([ac24cf8](https://github.com/cirrax/puppet-knot/commit/ac24cf8564a92d014857758a7667ee3cb2657fed))
+* fix ensure absent for domain ([d442245](https://github.com/cirrax/puppet-knot/commit/d4422454cc6f4b9f8b9efb8feb8666e76520cf0a))
+* Merge pull request #2 from cirrax/dev_cirrax ([b56ff23](https://github.com/cirrax/puppet-knot/commit/b56ff23cb30cb0b69d4774a6b43e8e9be6862421))
+* add parameter local_subzone to domain.pp ([bdcd398](https://github.com/cirrax/puppet-knot/commit/bdcd3980a352d0cee732b320382eaa4cbba26902))
+
+## Version: v0.1.0 (28 February 2026)
+* Release v0.1.0 ([b23a84a](https://github.com/cirrax/puppet-knot/commit/b23a84ae6f5defb2a34739aff7fd1d0dd85f22ff))
 * Merge pull request #1 from cirrax/dev_cirrax ([c5ac1ab](https://github.com/cirrax/puppet-knot/commit/c5ac1abc3bccea61df7b48b3b5829b4e49842640))
 * fix lint errors ([bd308a2](https://github.com/cirrax/puppet-knot/commit/bd308a2a0f5fa21339bc5ffc20729f45aeb41fc9))
 * fix ci run ([d69d0f7](https://github.com/cirrax/puppet-knot/commit/d69d0f7e074985afde2aeee3efbc3952b49f5b70))
