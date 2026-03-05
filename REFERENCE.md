@@ -414,6 +414,8 @@ The following parameters are available in the `knot::backup` class:
 * [`timer`](#-knot--backup--timer)
 * [`list_keys_script`](#-knot--backup--list_keys_script)
 * [`key_stati_file`](#-knot--backup--key_stati_file)
+* [`active`](#-knot--backup--active)
+* [`enable`](#-knot--backup--enable)
 
 ##### <a name="-knot--backup--dir"></a>`dir`
 
@@ -474,6 +476,24 @@ where we write the current key stati if list_keys_script
 is set
 
 Default value: `"${dir}/current-key-list.txt"`
+
+##### <a name="-knot--backup--active"></a>`active`
+
+Data type: `Optional[Boolean]`
+
+If set to true or false the timer service will be maintained.
+If true the timer service will be running and enabled, if false it will
+explicitly stopped and disabled.
+
+Default value: `undef`
+
+##### <a name="-knot--backup--enable"></a>`enable`
+
+Data type: `Optional[Variant[Boolean, Enum['mask']]]`
+
+If set, will manage the state of the timer unit.
+
+Default value: `undef`
 
 ### <a name="knot--records--defaults--caa"></a>`knot::records::defaults::caa`
 

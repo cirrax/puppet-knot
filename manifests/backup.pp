@@ -23,14 +23,23 @@
 # @param key_stati_file
 #   where we write the current key stati if list_keys_script
 #   is set
+# @param active
+#  If set to true or false the timer service will be maintained.
+#  If true the timer service will be running and enabled, if false it will
+#  explicitly stopped and disabled.
+# @param enable
+#   If set, will manage the state of the timer unit.
+#
 class knot::backup (
-  Stdlib::Absolutepath           $dir              = '/var/lib/knot-backup',
-  String[1]                      $owner            = 'knot',
-  String[1]                      $group            = 'knot',
-  String[1]                      $mode             = '0700',
-  Array[String[1]]               $timer            = ['OnCalendar=*-*-* 01:00:00', 'Persistent=true'],
-  Optional[Stdlib::Absolutepath] $list_keys_script = undef,
-  Stdlib::Absolutepath           $key_stati_file   = "${dir}/current-key-list.txt",
+  Stdlib::Absolutepath                     $dir              = '/var/lib/knot-backup',
+  String[1]                                $owner            = 'knot',
+  String[1]                                $group            = 'knot',
+  String[1]                                $mode             = '0700',
+  Array[String[1]]                         $timer            = ['OnCalendar=*-*-* 01:00:00', 'Persistent=true'],
+  Optional[Stdlib::Absolutepath]           $list_keys_script = undef,
+  Stdlib::Absolutepath                     $key_stati_file   = "${dir}/current-key-list.txt",
+  Optional[Variant[Boolean, Enum['mask']]] $enable           = undef,
+  Optional[Boolean]                        $active           = undef,
 ) {
   file { [$dir, "${dir}/current", "${dir}/previous"]:
     ensure => 'directory',
@@ -55,5 +64,7 @@ class knot::backup (
     ensure          => 'present',
     timer_content   => epp('knot/backup/timer.epp', { 'timer' => $timer }),
     service_content => epp('knot/backup/service.epp', { 'list_keys_script' => $list_keys_script, 'dir' => $dir, 'key_stati_file' => $key_stati_file }),
+    enable          => $enable,
+    active          => $active,
   }
 }
