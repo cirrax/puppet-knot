@@ -42,6 +42,8 @@ describe 'knot::backup' do
     it {
       is_expected.to contain_systemd__timer('knot-backup.timer')
         .with_ensure('present')
+        .with_enable(params[:enable])
+        .with_active(params[:active])
     }
   end
 
@@ -65,7 +67,9 @@ describe 'knot::backup' do
             group: 'bind',
             mode: '0000',
             timer: ['OnCalender=\never'],
-            list_keys_script: '/usr/local/bin/script'
+            list_keys_script: '/usr/local/bin/script',
+            enable: true,
+            active: true
           )
         end
 
