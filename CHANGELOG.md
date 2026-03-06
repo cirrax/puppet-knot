@@ -1,7 +1,14 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.2.1 (3 March 2026)
+## Version: 0.2.2 (6 March 2026)
+* Merge pull request #6 from cirrax/dev_cirrax ([279fa20](https://github.com/cirrax/puppet-knot/commit/279fa209548e077af4db8b9df8db7d5c6bfa23cc))
+* add possibility to add CSYNC record to domain ([923e29f](https://github.com/cirrax/puppet-knot/commit/923e29f7a5cf887d9ef473219c7591de094c5b28))
+* Merge pull request #5 from cirrax/dev_cirrax ([2c97252](https://github.com/cirrax/puppet-knot/commit/2c9725203a4cf98ea472f9692d42e08eac484910))
+* add parameter to set backup to enable and active ([e8670f5](https://github.com/cirrax/puppet-knot/commit/e8670f55a1b3a71fec0aa5ae3376f2e8085e1329))
+
+## Version: v0.2.1 (3 March 2026)
+* Release v0.2.1 ([89730d4](https://github.com/cirrax/puppet-knot/commit/89730d4cb2cf617667ef456dad11025ed64ae53c))
 * Merge pull request #4 from cirrax/dev_cirrax ([6109c28](https://github.com/cirrax/puppet-knot/commit/6109c28efff5b2030437c110ba04d1cfd56fafe0))
 * add pop3 and imap srv records for email ([07b51e6](https://github.com/cirrax/puppet-knot/commit/07b51e63238c883381c7f49e13642b32838d33dd))
 
