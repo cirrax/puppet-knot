@@ -23,7 +23,7 @@ define knot::records::network (
   Hash[String[1],Hash[String[1],Any]] $hostlist     = {},
   Integer                             $ttl          = 3600,
   String[1]                           $ipv4_key     = 'ipv4',
-  String[1]                           $ipv6_key     = 'ipv4',
+  String[1]                           $ipv6_key     = 'ipv6',
 ) {
   $hostlist.each | String[1] $rname, Hash[String[1],Any] $vals | {
     if $ipv4_key in $vals.keys() {

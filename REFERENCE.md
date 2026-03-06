@@ -2116,7 +2116,7 @@ Data type: `String[1]`
 
 the key for ipv6 records
 
-Default value: `'ipv4'`
+Default value: `'ipv6'`
 
 ### <a name="knot--records--srv"></a>`knot::records::srv`
 
