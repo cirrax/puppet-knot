@@ -50,6 +50,7 @@
 * [`Knot::Policy`](#Knot--Policy): policy configuration section
 * [`Knot::Record`](#Knot--Record): a record in a domain
 * [`Knot::Record::Caa`](#Knot--Record--Caa): CAA record type
+* [`Knot::Record::Csync`](#Knot--Record--Csync): CSYNC record type
 * [`Knot::Record::Dmarc_auth`](#Knot--Record--Dmarc_auth): Dmarc report authorization
 * [`Knot::Record::Mx`](#Knot--Record--Mx): MX record type
 * [`Knot::Record::Service`](#Knot--Record--Service): service RR  such as used for TLSA or SRV
@@ -1188,6 +1189,7 @@ The following parameters are available in the `knot::domain` defined type:
 * [`zone_records`](#-knot--domain--zone_records)
 * [`zone_nameservers`](#-knot--domain--zone_nameservers)
 * [`zone_nameservers_ttl`](#-knot--domain--zone_nameservers_ttl)
+* [`zone_csync`](#-knot--domain--zone_csync)
 * [`zone_subzones`](#-knot--domain--zone_subzones)
 * [`local_subzones`](#-knot--domain--local_subzones)
 
@@ -1748,6 +1750,15 @@ ttl to use for $zone_nameservers entries
 remark: only relevant if $manage_zone set to true
 
 Default value: `3600`
+
+##### <a name="-knot--domain--zone_csync"></a>`zone_csync`
+
+Data type: `Optional[Knot::Record::Csync]`
+
+add a csync record to the domain
+remark: only relevant if $manage_zone set to true
+
+Default value: `undef`
 
 ##### <a name="-knot--domain--zone_subzones"></a>`zone_subzones`
 
@@ -2878,6 +2889,23 @@ Alias of
 Struct[{
   'flags'  => Integer[0,255],
   'tag'    => Enum['issue','issuewild','iodef'],
+  'value'  => String[1],
+}]
+```
+
+### <a name="Knot--Record--Csync"></a>`Knot::Record::Csync`
+
+CSYNC record type
+
+* **See also**
+  * https://www.rfc-editor.org/rfc/rfc7477
+
+Alias of
+
+```puppet
+Struct[{
+  'flags'  => Integer[0,255],
+  'serial' => Integer,
   'value'  => String[1],
 }]
 ```

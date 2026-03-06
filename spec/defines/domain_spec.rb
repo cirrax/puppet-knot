@@ -60,7 +60,14 @@ describe 'knot::domain' do
                 .with_rcontent(r)
             end
           end
-
+          if params[':zone_csync']
+            is_expected.to contain_knot_record("CSYNC for #{params[:domain]}")
+              .with_target_zone(params[:domain])
+              .with_rname('.')
+              .with_rtype('CSYNC')
+              .with_rttl(params[:zone_nameservers_ttl])
+              .with_rcontent("#{params[:zone_csync][:serial]} #{params[:zone_csync][:flags]} #{params[:zone_csync][:value]}")
+          end
         else
           params[:zone_records].each do |r|
             is_expected.not_to contain_knot_record("record #{r[:rname]}.#{params[:domain]} (#{i})")
@@ -101,12 +108,14 @@ describe 'knot::domain' do
         let(:title) { 'testdomain' }
         let :params do
           default_params.merge({
+                                 ensure: 'present',
                                  domain: 'example.net',
                                  manage_zone: true,
                                  zone_records: [{ rname: 'test', rcontent: '1.1.1.1' }, { rname: 'test', rtype: 'AAAA', rcontent: '::1' }],
                                  zone_nameservers: ['ns1.example.org.', 'ns2.example.org.'],
                                  zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } },
-                                 local_subzones: %w[blah fasel]
+                                 local_subzones: %w[blah fasel],
+                                 zone_csync: { 'value' => 'NS', 'flags' => 1, 'serial' => 0 },
                                })
         end
 

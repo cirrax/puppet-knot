@@ -166,6 +166,9 @@
 # @param zone_nameservers_ttl
 #   ttl to use for $zone_nameservers entries   
 #   remark: only relevant if $manage_zone set to true
+# @param zone_csync
+#   add a csync record to the domain
+#   remark: only relevant if $manage_zone set to true
 # @param zone_subzones
 #   Hash of subzones to establish by manually set NS/DS records.
 #   remark: only relevant if $manage_zone set to true
@@ -248,6 +251,7 @@ define knot::domain (
   Array[Knot::Record]                                                   $zone_records         = [],
   Array[String[1]]                                                      $zone_nameservers     = [],
   Integer                                                               $zone_nameservers_ttl = 3600,
+  Optional[Knot::Record::Csync]                                         $zone_csync           = undef,
   Hash[String[1],Knot::Subzone]                                         $zone_subzones        = {},
   Array[String[1]]                                                      $local_subzones       = [],
 ) {
@@ -344,6 +348,16 @@ define knot::domain (
         rcontent    => $ns,
       }
     }
+    if $zone_csync {
+      knot_record { "CSYNC for ${domain}":
+        target_zone => $domain,
+        rname       => '.',
+        rtype       => 'CSYNC',
+        rttl        => $zone_nameservers_ttl,
+        rcontent    => "${zone_csync['serial']} ${zone_csync['flags']} ${zone_csync['value']}",
+      }
+    }
+
     # add subzones
     $zone_subzones.each | String[1] $z, Knot::Subzone $sz | {
       pick_default($sz['nameservers'], []).each | String[1] $ns | {
