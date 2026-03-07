@@ -1,7 +1,18 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.2.2 (6 March 2026)
+## Version: 0.3.0 (7 March 2026)
+* Merge pull request #7 from cirrax/dev_cirrax ([ebf2739](https://github.com/cirrax/puppet-knot/commit/ebf2739574d7e16bb7976eaa5f48769613f6a041))
+* records/network: add possibility to add reverse PTR records ([26dc637](https://github.com/cirrax/puppet-knot/commit/26dc637d53cceaf7ad2bd4733c8f754f2c149eae))
+* knot::domain: add the abbility to generate a whole set of records ([5937838](https://github.com/cirrax/puppet-knot/commit/5937838a3edba011ce09d5c3063a391f051ef156))
+* add functions to calculate reverse records ([64f8f27](https://github.com/cirrax/puppet-knot/commit/64f8f271deb0a34fa18ae0a3312fa078eab79d12))
+* knot_record type: munge rcontent if no dot at end for specific record types ([9b503c6](https://github.com/cirrax/puppet-knot/commit/9b503c6f8d2aabf509fcad091e74493a48e73b7c))
+* records/network: fix getting the var value ([6da93f9](https://github.com/cirrax/puppet-knot/commit/6da93f957223ac0bdf99771c0e4b5860c9fa0ee1))
+* records/network: use downcase for rname ([dd5bd92](https://github.com/cirrax/puppet-knot/commit/dd5bd9241a03e6f0f2e2b0b23470eb8530a9d04f))
+* records/network: fix default value for ipv6_key parameter ([ff96ee7](https://github.com/cirrax/puppet-knot/commit/ff96ee7769b4f80691c5aac71208ee0aa9203ccd))
+
+## Version: v0.2.2 (6 March 2026)
+* Release v0.2.2 ([cd2dfd7](https://github.com/cirrax/puppet-knot/commit/cd2dfd72f76ab4c82b463d725b3ee82c1a12ffee))
 * Merge pull request #6 from cirrax/dev_cirrax ([279fa20](https://github.com/cirrax/puppet-knot/commit/279fa209548e077af4db8b9df8db7d5c6bfa23cc))
 * add possibility to add CSYNC record to domain ([923e29f](https://github.com/cirrax/puppet-knot/commit/923e29f7a5cf887d9ef473219c7591de094c5b28))
 * Merge pull request #5 from cirrax/dev_cirrax ([2c97252](https://github.com/cirrax/puppet-knot/commit/2c9725203a4cf98ea472f9692d42e08eac484910))
