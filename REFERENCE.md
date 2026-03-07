@@ -2087,6 +2087,8 @@ The following parameters are available in the `knot::records::network` defined t
 * [`ttl`](#-knot--records--network--ttl)
 * [`ipv4_key`](#-knot--records--network--ipv4_key)
 * [`ipv6_key`](#-knot--records--network--ipv6_key)
+* [`rev4_target_split`](#-knot--records--network--rev4_target_split)
+* [`rev6_target_split`](#-knot--records--network--rev6_target_split)
 
 ##### <a name="-knot--records--network--target_zone"></a>`target_zone`
 
@@ -2129,6 +2131,33 @@ Data type: `String[1]`
 the key for ipv6 records
 
 Default value: `'ipv6'`
+
+##### <a name="-knot--records--network--rev4_target_split"></a>`rev4_target_split`
+
+Data type: `Optional[Integer[1,4]]`
+
+if this is set a reverse ipv4 PTR record is generated and added to
+the respective reverse zone (asuming that puppet can manage records
+in the domain (zone_manage_records == true).
+The integer you set gives the parts taken for the hostname.
+eg. setting rev4_target_split = 1 for ip 1.2.3.4 results in
+a PTR record for 1 on target zone 3.2.1.in-addr.arpa
+
+Default value: `undef`
+
+##### <a name="-knot--records--network--rev6_target_split"></a>`rev6_target_split`
+
+Data type: `Optional[Integer[1,32]]`
+
+if this is set a reverse ipv6 PTR record is generated and added to
+the respective reverse zone (asuming that puppet can manage records
+in the domain (zone_manage_records == true).
+The integer you set gives the parts taken for the hostname.
+eg. setting rev6_target_split = 21 for ip ::1 results in
+a PTR record for 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0
+on target zone 0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
+
+Default value: `undef`
 
 ### <a name="knot--records--srv"></a>`knot::records::srv`
 

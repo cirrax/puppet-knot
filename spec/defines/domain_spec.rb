@@ -27,19 +27,19 @@ describe 'knot::domain' do
         if params[:ensure] == 'present'
           i = 0
           params[:zone_records].each do |r|
-            if r[:range] != nil
-              r[:range].each do |counter|
-                is_expected.to contain_knot_record("record #{counter} #{r[:rname]}.#{params[:domain]} (#{i})")
-                  .with_target_zone(params[:domain])
-                  .with_rname(r[:rname].gsub('$', "#{counter}"))
-                  .with_rcontent(r[:rcontent].gsub('$', "#{counter}"))
-              end
-
-            else
+            if r[:range].nil?
               is_expected.to contain_knot_record("record #{r[:rname]}.#{params[:domain]} (#{i})")
                 .with_target_zone(params[:domain])
                 .with_rname(r[:rname])
                 .with_rcontent(r[:rcontent])
+            else
+              r[:range].each do |counter|
+                is_expected.to contain_knot_record("record #{counter} #{r[:rname]}.#{params[:domain]} (#{i})")
+                  .with_target_zone(params[:domain])
+                  .with_rname(r[:rname].gsub('$', counter.to_s))
+                  .with_rcontent(r[:rcontent].gsub('$', counter.to_s))
+              end
+
             end
             i += 1
           end
