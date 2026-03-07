@@ -27,10 +27,20 @@ describe 'knot::domain' do
         if params[:ensure] == 'present'
           i = 0
           params[:zone_records].each do |r|
-            is_expected.to contain_knot_record("record #{r[:rname]}.#{params[:domain]} (#{i})")
-              .with_target_zone(params[:domain])
-              .with_rname(r[:rname])
-              .with_rcontent(r[:rcontent])
+            if r[:range].nil?
+              is_expected.to contain_knot_record("record #{r[:rname]}.#{params[:domain]} (#{i})")
+                .with_target_zone(params[:domain])
+                .with_rname(r[:rname])
+                .with_rcontent(r[:rcontent])
+            else
+              r[:range].each do |counter|
+                is_expected.to contain_knot_record("record #{counter} #{r[:rname]}.#{params[:domain]} (#{i})")
+                  .with_target_zone(params[:domain])
+                  .with_rname(r[:rname].gsub('$', counter.to_s))
+                  .with_rcontent(r[:rcontent].gsub('$', counter.to_s))
+              end
+
+            end
             i += 1
           end
           params[:zone_nameservers].each do |r|
@@ -112,6 +122,24 @@ describe 'knot::domain' do
                                  domain: 'example.net',
                                  manage_zone: true,
                                  zone_records: [{ rname: 'test', rcontent: '1.1.1.1' }, { rname: 'test', rtype: 'AAAA', rcontent: '::1' }],
+                                 zone_nameservers: ['ns1.example.org.', 'ns2.example.org.'],
+                                 zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } },
+                                 local_subzones: %w[blah fasel],
+                                 zone_csync: { 'value' => 'NS', 'flags' => 1, 'serial' => 0 },
+                               })
+        end
+
+        it_behaves_like 'knot::domain shared examples'
+      end
+
+      context 'with manage_zone true and generated recods' do
+        let(:title) { 'testdomain' }
+        let :params do
+          default_params.merge({
+                                 ensure: 'present',
+                                 domain: 'example.net',
+                                 manage_zone: true,
+                                 zone_records: [{ rname: '$-test-$', rcontent: '1.1.1.$', range: [1, 2] }],
                                  zone_nameservers: ['ns1.example.org.', 'ns2.example.org.'],
                                  zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } },
                                  local_subzones: %w[blah fasel],

@@ -7,7 +7,7 @@ Puppet::Type.newtype(:knot_record) do
     desc 'name of the record as namevar'
 
     validate do |value|
-      raise ArgumentError, 'The name of the zone needs to be a string' unless value.is_a?(String)
+      raise ArgumentError, 'The name of the record needs to be a string' unless value.is_a?(String)
     end
   end
 
@@ -51,11 +51,20 @@ Puppet::Type.newtype(:knot_record) do
     desc 'the ttl of the record'
     defaultto '3600'
     validate do |value|
-      raise ArgumentError, 'rttl needs to be a string' unless value.is_a?(String) || value.is_a?(Integer)
+      raise ArgumentError, 'rttl needs to be a string or an integer' unless value.is_a?(String) || value.is_a?(Integer)
     end
   end
 
   newparam(:rcontent) do
-    desc 'the content of the record'
+    desc 'the content of the record (if rtype is one of CNAME,NS,MX,SRV and it does not end with a dot, the target_zone is amended)'
+    validate do |value|
+      raise ArgumentError, 'rcontent needs to be a string' unless value.is_a?(String)
+    end
+
+    munge do |value|
+      return "#{value}.#{@resource[:target_zone]}." if %w[CNAME NS MX SRV].include?(@resource[:rtype]) && !%r{\.$}.match(value)
+
+      value
+    end
   end
 end

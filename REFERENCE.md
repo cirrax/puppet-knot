@@ -34,6 +34,10 @@
 ### Functions
 
 * [`knot::hname`](#knot--hname): function to get the hostname of fqdn by cutting the zone
+* [`knot::reverse4_host`](#knot--reverse4_host): calculate the host part for a reverse PTR record
+* [`knot::reverse4_target`](#knot--reverse4_target): calculate the target domain for a reverse PTR record
+* [`knot::reverse6_host`](#knot--reverse6_host): calculate the target domain for a reverse PTR record
+* [`knot::reverse6_target`](#knot--reverse6_target): calculate the target domain for a reverse PTR record
 * [`knot::zone`](#knot--zone): function to get the zone of fqdn by cutting the hostname
 
 ### Data types
@@ -57,6 +61,7 @@
 * [`Knot::Record::Spf`](#Knot--Record--Spf): SPF record type
 * [`Knot::Record::Srv`](#Knot--Record--Srv): SRV record type
 * [`Knot::Record::Tlsa`](#Knot--Record--Tlsa): TLSA record type
+* [`Knot::Record_generate`](#Knot--Record_generate): a range of records in a domain
 * [`Knot::Remote`](#Knot--Remote): remote configuration section
 * [`Knot::Remotes`](#Knot--Remotes): remotes configuration section
 * [`Knot::Server`](#Knot--Server): server configuration section
@@ -1726,9 +1731,16 @@ Default value: `undef`
 
 ##### <a name="-knot--domain--zone_records"></a>`zone_records`
 
-Data type: `Array[Knot::Record]`
+Data type: `Array[Variant[Knot::Record,Knot::Record_generate]]`
 
 array of records to add to the domain
+Example:
+  { rname => 'host', rtype => 'A', rcontent => '192.168.42.42' }
+if you specify a range, a set of records is generated
+where $ (dollar sign) is replaced with a counter in rcontent and rname
+Example:
+  { rname => '$', rtype => 'PTR', range => [1,254], rcontent => '$.test.com.' }
+  generates PTR records for for a class C network.
 remark: only relevant if $manage_zone set to true
 
 Default value: `[]`
@@ -2075,6 +2087,8 @@ The following parameters are available in the `knot::records::network` defined t
 * [`ttl`](#-knot--records--network--ttl)
 * [`ipv4_key`](#-knot--records--network--ipv4_key)
 * [`ipv6_key`](#-knot--records--network--ipv6_key)
+* [`rev4_target_split`](#-knot--records--network--rev4_target_split)
+* [`rev6_target_split`](#-knot--records--network--rev6_target_split)
 
 ##### <a name="-knot--records--network--target_zone"></a>`target_zone`
 
@@ -2116,7 +2130,34 @@ Data type: `String[1]`
 
 the key for ipv6 records
 
-Default value: `'ipv4'`
+Default value: `'ipv6'`
+
+##### <a name="-knot--records--network--rev4_target_split"></a>`rev4_target_split`
+
+Data type: `Optional[Integer[1,4]]`
+
+if this is set a reverse ipv4 PTR record is generated and added to
+the respective reverse zone (asuming that puppet can manage records
+in the domain (zone_manage_records == true).
+The integer you set gives the parts taken for the hostname.
+eg. setting rev4_target_split = 1 for ip 1.2.3.4 results in
+a PTR record for 1 on target zone 3.2.1.in-addr.arpa
+
+Default value: `undef`
+
+##### <a name="-knot--records--network--rev6_target_split"></a>`rev6_target_split`
+
+Data type: `Optional[Integer[1,32]]`
+
+if this is set a reverse ipv6 PTR record is generated and added to
+the respective reverse zone (asuming that puppet can manage records
+in the domain (zone_manage_records == true).
+The integer you set gives the parts taken for the hostname.
+eg. setting rev6_target_split = 21 for ip ::1 results in
+a PTR record for 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0
+on target zone 0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
+
+Default value: `undef`
 
 ### <a name="knot--records--srv"></a>`knot::records::srv`
 
@@ -2368,7 +2409,8 @@ Default value: `''`
 
 ##### <a name="-knot_record--rcontent"></a>`rcontent`
 
-the content of the record
+the content of the record (if rtype is one of CNAME,NS,MX,SRV and it does not end with a dot, the target_zone is
+amended)
 
 ##### <a name="-knot_record--rname"></a>`rname`
 
@@ -2602,6 +2644,175 @@ for toplevel domains we return a '.'
 Data type: `String`
 
 the fqdn of a node
+
+### <a name="knot--reverse4_host"></a>`knot::reverse4_host`
+
+Type: Ruby 4.x API
+
+calculate the host part for a reverse PTR record
+
+#### Examples
+
+##### 
+
+```puppet
+knot::reverse4_host('1.2.3.4',2) => '4.3'
+```
+
+#### `knot::reverse4_host(Stdlib::IP::Address::V4::Nosubnet $ipaddress, Integer[1,4] $parts)`
+
+The knot::reverse4_host function.
+
+Returns: `String[1]` the host
+
+##### Examples
+
+###### 
+
+```puppet
+knot::reverse4_host('1.2.3.4',2) => '4.3'
+```
+
+##### `ipaddress`
+
+Data type: `Stdlib::IP::Address::V4::Nosubnet`
+
+the ip address we like to create the reverse record
+
+##### `parts`
+
+Data type: `Integer[1,4]`
+
+set the parts to taken for the hostname.
+eg. setting split = 1 for ip 1.2.3.4 results in
+returning host part 4
+
+### <a name="knot--reverse4_target"></a>`knot::reverse4_target`
+
+Type: Ruby 4.x API
+
+calculate the target domain for a reverse PTR record
+
+#### Examples
+
+##### 
+
+```puppet
+knot::reverse4_target('1.2.3.4',2) => 2.1.in-addr.arpa
+```
+
+#### `knot::reverse4_target(Stdlib::IP::Address::V4::Nosubnet $ipaddress, Integer[1,4] $parts)`
+
+The knot::reverse4_target function.
+
+Returns: `String[1]` the target domain
+
+##### Examples
+
+###### 
+
+```puppet
+knot::reverse4_target('1.2.3.4',2) => 2.1.in-addr.arpa
+```
+
+##### `ipaddress`
+
+Data type: `Stdlib::IP::Address::V4::Nosubnet`
+
+the ip address we like to create the reverse record
+
+##### `parts`
+
+Data type: `Integer[1,4]`
+
+set the parts taken away for the hostname.
+eg. setting split = 1 for ip 1.2.3.4 results in
+returning target zone 3.2.1.in-addr.arpa
+
+### <a name="knot--reverse6_host"></a>`knot::reverse6_host`
+
+Type: Ruby 4.x API
+
+calculate the target domain for a reverse PTR record
+
+#### Examples
+
+##### 
+
+```puppet
+knot::reverse6_host('::1',2) => '1.0'
+```
+
+#### `knot::reverse6_host(Stdlib::IP::Address::V6::Nosubnet $ipaddress, Integer[1,32] $parts)`
+
+The knot::reverse6_host function.
+
+Returns: `String[1]` the host
+
+##### Examples
+
+###### 
+
+```puppet
+knot::reverse6_host('::1',2) => '1.0'
+```
+
+##### `ipaddress`
+
+Data type: `Stdlib::IP::Address::V6::Nosubnet`
+
+the ip address we like to create the reverse record
+
+##### `parts`
+
+Data type: `Integer[1,32]`
+
+set the parts to take for the hostname.
+eg. setting split = 1 for ip ::1 results in
+returning host 1
+
+### <a name="knot--reverse6_target"></a>`knot::reverse6_target`
+
+Type: Ruby 4.x API
+
+calculate the target domain for a reverse PTR record
+
+#### Examples
+
+##### 
+
+```puppet
+knot::reverse6_target('::1',21) => '0.0.0.0.0.0.0.d.c.b.a.ip6.arpa'
+```
+
+#### `knot::reverse6_target(Stdlib::IP::Address::V6::Nosubnet $ipaddress, Integer[1,32] $parts)`
+
+The knot::reverse6_target function.
+
+Returns: `String[1]` the target domain
+
+##### Examples
+
+###### 
+
+```puppet
+knot::reverse6_target('::1',21) => '0.0.0.0.0.0.0.d.c.b.a.ip6.arpa'
+```
+
+##### `ipaddress`
+
+Data type: `Stdlib::IP::Address::V6::Nosubnet`
+
+the ip address we like to create the reverse record
+
+##### `parts`
+
+Data type: `Integer[1,32]`
+
+set the parts taken away for the hostname.
+eg. setting parts = 1 for ip ::1 results in
+returning target zone
+0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
 
 ### <a name="knot--zone"></a>`knot::zone`
 
@@ -3009,6 +3220,24 @@ Struct[{
   'selector' => Integer[0,255],
   'matching' => Integer[0,255],
   'value'    => String[1],
+}]
+```
+
+### <a name="Knot--Record_generate"></a>`Knot::Record_generate`
+
+used to create records using knot_record resource
+it's Knot::Record with the addition of a range
+
+Alias of
+
+```puppet
+Struct[{
+  'rname'    => String[1],
+  'rcontent' => String[1],
+  'rclass'   => Optional[String[1]],
+  'rtype'    => Optional[String[1]],
+  'rttl'     => Optional[String[1]],
+  'range'    => Tuple[Integer,Integer],
 }]
 ```
 

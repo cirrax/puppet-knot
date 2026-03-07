@@ -159,6 +159,13 @@
 #   remark: only relevant if $manage_zone set to true
 # @param zone_records
 #   array of records to add to the domain
+#   Example:
+#     { rname => 'host', rtype => 'A', rcontent => '192.168.42.42' }
+#   if you specify a range, a set of records is generated
+#   where $ (dollar sign) is replaced with a counter in rcontent and rname 
+#   Example:
+#     { rname => '$', rtype => 'PTR', range => [1,254], rcontent => '$.test.com.' }
+#     generates PTR records for for a class C network.
 #   remark: only relevant if $manage_zone set to true
 # @param zone_nameservers
 #   list of nameservers to add
@@ -248,7 +255,7 @@ define knot::domain (
   Optional[String[1]]                                                   $zone_soa_retry       = undef,
   Optional[String[1]]                                                   $zone_soa_expire      = undef,
   Optional[String[1]]                                                   $zone_soa_minttl      = undef,
-  Array[Knot::Record]                                                   $zone_records         = [],
+  Array[Variant[Knot::Record,Knot::Record_generate]]                    $zone_records         = [],
   Array[String[1]]                                                      $zone_nameservers     = [],
   Integer                                                               $zone_nameservers_ttl = 3600,
   Optional[Knot::Record::Csync]                                         $zone_csync           = undef,
@@ -328,14 +335,30 @@ define knot::domain (
     }
   }
   if $manage_zone and $ensure == 'present' {
-    $zone_records.each | Integer $i, Knot::Record $r | {
-      knot_record { "record ${r['rname']}.${domain} (${i})":
-        target_zone => $domain,
-        rname       => $r.get('rname'),
-        rclass      => $r.get('rclass'),
-        rtype       => $r.get('rtype'),
-        rttl        => $r.get('rttl'),
-        rcontent    => $r.get('rcontent'),
+    $zone_records.each | Integer $i, Variant[Knot::Record,Knot::Record_generate] $r | {
+      if $r =~ Knot::Record_generate {
+        $regex = /\$/
+        Integer[$r['range']].each | Integer $counter | {
+          # lint:ignore:only_variable_string
+          knot_record { "record ${counter} ${r['rname']}.${domain} (${i})":
+            target_zone => $domain,
+            rname       => $r.get('rname').regsubst($regex,"${counter}",'G'),
+            rclass      => $r.get('rclass'),
+            rtype       => $r.get('rtype'),
+            rttl        => $r.get('rttl'),
+            rcontent    => $r.get('rcontent').regsubst($regex,"${counter}",'G'),
+          }
+          # lint:endignore
+        }
+      } else {
+        knot_record { "record ${r['rname']}.${domain} (${i})":
+          target_zone => $domain,
+          rname       => $r.get('rname'),
+          rclass      => $r.get('rclass'),
+          rtype       => $r.get('rtype'),
+          rttl        => $r.get('rttl'),
+          rcontent    => $r.get('rcontent'),
+        }
       }
     }
     # add nameservers
