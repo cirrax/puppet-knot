@@ -61,6 +61,7 @@
 * [`Knot::Record::Spf`](#Knot--Record--Spf): SPF record type
 * [`Knot::Record::Srv`](#Knot--Record--Srv): SRV record type
 * [`Knot::Record::Tlsa`](#Knot--Record--Tlsa): TLSA record type
+* [`Knot::Record_generate`](#Knot--Record_generate): a range of records in a domain
 * [`Knot::Remote`](#Knot--Remote): remote configuration section
 * [`Knot::Remotes`](#Knot--Remotes): remotes configuration section
 * [`Knot::Server`](#Knot--Server): server configuration section
@@ -1730,9 +1731,16 @@ Default value: `undef`
 
 ##### <a name="-knot--domain--zone_records"></a>`zone_records`
 
-Data type: `Array[Knot::Record]`
+Data type: `Array[Variant[Knot::Record,Knot::Record_generate]]`
 
 array of records to add to the domain
+Example:
+  { rname => 'host', rtype => 'A', rcontent => '192.168.42.42' }
+if you specify a range, a set of records is generated
+where $ (dollar sign) is replaced with a counter in rcontent and rname
+Example:
+  { rname => '$', rtype => 'PTR', range => [1,254], rcontent => '$.test.com.' }
+  generates PTR records for for a class C network.
 remark: only relevant if $manage_zone set to true
 
 Default value: `[]`
@@ -3183,6 +3191,24 @@ Struct[{
   'selector' => Integer[0,255],
   'matching' => Integer[0,255],
   'value'    => String[1],
+}]
+```
+
+### <a name="Knot--Record_generate"></a>`Knot::Record_generate`
+
+used to create records using knot_record resource
+it's Knot::Record with the addition of a range
+
+Alias of
+
+```puppet
+Struct[{
+  'rname'    => String[1],
+  'rcontent' => String[1],
+  'rclass'   => Optional[String[1]],
+  'rtype'    => Optional[String[1]],
+  'rttl'     => Optional[String[1]],
+  'range'    => Tuple[Integer,Integer],
 }]
 ```
 
