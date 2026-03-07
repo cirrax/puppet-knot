@@ -32,7 +32,7 @@ define knot::records::network (
         rname       => $rname.downcase(),
         rtype       => 'A',
         rttl        => $ttl,
-        rcontent    => $vals.getvar($ipv4_key),
+        rcontent    => $vals.get($ipv4_key),
       }
     }
 
@@ -42,7 +42,7 @@ define knot::records::network (
         rname       => $rname.downcase(),
         rtype       => 'AAAA',
         rttl        => $ttl,
-        rcontent    => $vals.getvar($ipv6_key),
+        rcontent    => $vals.get($ipv6_key),
       }
     }
   }
