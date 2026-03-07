@@ -34,6 +34,10 @@
 ### Functions
 
 * [`knot::hname`](#knot--hname): function to get the hostname of fqdn by cutting the zone
+* [`knot::reverse4_host`](#knot--reverse4_host): calculate the host part for a reverse PTR record
+* [`knot::reverse4_target`](#knot--reverse4_target): calculate the target domain for a reverse PTR record
+* [`knot::reverse6_host`](#knot--reverse6_host): calculate the target domain for a reverse PTR record
+* [`knot::reverse6_target`](#knot--reverse6_target): calculate the target domain for a reverse PTR record
 * [`knot::zone`](#knot--zone): function to get the zone of fqdn by cutting the hostname
 
 ### Data types
@@ -2603,6 +2607,175 @@ for toplevel domains we return a '.'
 Data type: `String`
 
 the fqdn of a node
+
+### <a name="knot--reverse4_host"></a>`knot::reverse4_host`
+
+Type: Ruby 4.x API
+
+calculate the host part for a reverse PTR record
+
+#### Examples
+
+##### 
+
+```puppet
+knot::reverse4_host('1.2.3.4',2) => '4.3'
+```
+
+#### `knot::reverse4_host(Stdlib::IP::Address::V4::Nosubnet $ipaddress, Integer[1,4] $parts)`
+
+The knot::reverse4_host function.
+
+Returns: `String[1]` the host
+
+##### Examples
+
+###### 
+
+```puppet
+knot::reverse4_host('1.2.3.4',2) => '4.3'
+```
+
+##### `ipaddress`
+
+Data type: `Stdlib::IP::Address::V4::Nosubnet`
+
+the ip address we like to create the reverse record
+
+##### `parts`
+
+Data type: `Integer[1,4]`
+
+set the parts to taken for the hostname.
+eg. setting split = 1 for ip 1.2.3.4 results in
+returning host part 4
+
+### <a name="knot--reverse4_target"></a>`knot::reverse4_target`
+
+Type: Ruby 4.x API
+
+calculate the target domain for a reverse PTR record
+
+#### Examples
+
+##### 
+
+```puppet
+knot::reverse4_target('1.2.3.4',2) => 2.1.in-addr.arpa
+```
+
+#### `knot::reverse4_target(Stdlib::IP::Address::V4::Nosubnet $ipaddress, Integer[1,4] $parts)`
+
+The knot::reverse4_target function.
+
+Returns: `String[1]` the target domain
+
+##### Examples
+
+###### 
+
+```puppet
+knot::reverse4_target('1.2.3.4',2) => 2.1.in-addr.arpa
+```
+
+##### `ipaddress`
+
+Data type: `Stdlib::IP::Address::V4::Nosubnet`
+
+the ip address we like to create the reverse record
+
+##### `parts`
+
+Data type: `Integer[1,4]`
+
+set the parts taken away for the hostname.
+eg. setting split = 1 for ip 1.2.3.4 results in
+returning target zone 3.2.1.in-addr.arpa
+
+### <a name="knot--reverse6_host"></a>`knot::reverse6_host`
+
+Type: Ruby 4.x API
+
+calculate the target domain for a reverse PTR record
+
+#### Examples
+
+##### 
+
+```puppet
+knot::reverse6_host('::1',2) => '1.0'
+```
+
+#### `knot::reverse6_host(Stdlib::IP::Address::V6::Nosubnet $ipaddress, Integer[1,32] $parts)`
+
+The knot::reverse6_host function.
+
+Returns: `String[1]` the host
+
+##### Examples
+
+###### 
+
+```puppet
+knot::reverse6_host('::1',2) => '1.0'
+```
+
+##### `ipaddress`
+
+Data type: `Stdlib::IP::Address::V6::Nosubnet`
+
+the ip address we like to create the reverse record
+
+##### `parts`
+
+Data type: `Integer[1,32]`
+
+set the parts to take for the hostname.
+eg. setting split = 1 for ip ::1 results in
+returning host 1
+
+### <a name="knot--reverse6_target"></a>`knot::reverse6_target`
+
+Type: Ruby 4.x API
+
+calculate the target domain for a reverse PTR record
+
+#### Examples
+
+##### 
+
+```puppet
+knot::reverse6_target('::1',21) => '0.0.0.0.0.0.0.d.c.b.a.ip6.arpa'
+```
+
+#### `knot::reverse6_target(Stdlib::IP::Address::V6::Nosubnet $ipaddress, Integer[1,32] $parts)`
+
+The knot::reverse6_target function.
+
+Returns: `String[1]` the target domain
+
+##### Examples
+
+###### 
+
+```puppet
+knot::reverse6_target('::1',21) => '0.0.0.0.0.0.0.d.c.b.a.ip6.arpa'
+```
+
+##### `ipaddress`
+
+Data type: `Stdlib::IP::Address::V6::Nosubnet`
+
+the ip address we like to create the reverse record
+
+##### `parts`
+
+Data type: `Integer[1,32]`
+
+set the parts taken away for the hostname.
+eg. setting parts = 1 for ip ::1 results in
+returning target zone
+0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
 
 ### <a name="knot--zone"></a>`knot::zone`
 
