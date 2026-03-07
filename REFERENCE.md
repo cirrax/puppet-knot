@@ -2368,7 +2368,8 @@ Default value: `''`
 
 ##### <a name="-knot_record--rcontent"></a>`rcontent`
 
-the content of the record
+the content of the record (if rtype is one of CNAME,NS,MX,SRV and it does not end with a dot, the target_zone is
+amended)
 
 ##### <a name="-knot_record--rname"></a>`rname`
 
