@@ -28,11 +28,11 @@ A domain configuration could look like:
 knot::domains:
   exampe.org:
     comment: 'example.org domain'
-      zone_soa_mname: 'ns0.example.org.'
-      manage_zone: true
-      zone_nameservers:
-        - 'ns0.example.org.'
-      zone_records:
+    zone_soa_mname: 'ns0.example.org.'
+    manage_zone: true
+    zone_nameservers:
+      - 'ns0.example.org.'
+    zone_records:
       - rname: 'ns0'
         rcontent: '127.0.0.1'
       - rname: 'ns0'
@@ -51,7 +51,7 @@ Please report bugs and feature request using GitHub issue tracker.
 
 For pull requests, it is very much appreciated to check your Puppet manifest with puppet-lint
 and the available spec tests in order to follow the recommended Puppet style guidelines
-as Voxpupuli lives themn.
+as Voxpupuli lives them.
 
 ### Authors
 
