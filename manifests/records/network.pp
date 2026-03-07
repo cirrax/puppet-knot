@@ -29,7 +29,7 @@ define knot::records::network (
     if $ipv4_key in $vals.keys() {
       knot_record { "ipv4: ${title} ${rname}.${target_zone}":
         target_zone => $target_zone,
-        rname       => $rname,
+        rname       => $rname.downcase(),
         rtype       => 'A',
         rttl        => $ttl,
         rcontent    => $vals.getvar($ipv4_key),
@@ -39,7 +39,7 @@ define knot::records::network (
     if $ipv6_key in $vals.keys() {
       knot_record { "ipv6: ${title} ${rname}.${target_zone}":
         target_zone => $target_zone,
-        rname       => $rname,
+        rname       => $rname.downcase(),
         rtype       => 'AAAA',
         rttl        => $ttl,
         rcontent    => $vals.getvar($ipv6_key),
