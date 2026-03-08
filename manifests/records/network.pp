@@ -57,7 +57,7 @@ define knot::records::network (
           rname       => knot::reverse4_host($vals.get($ipv4_key),$rev4_target_split),
           rtype       => 'PTR',
           rttl        => $ttl,
-          rcontent    => "${rname}.${target_zone}.",
+          rcontent    => "${rname}.${target_zone}.".downcase(),
         }
       }
     }
@@ -76,7 +76,7 @@ define knot::records::network (
           rname       => knot::reverse6_host($vals.get($ipv6_key),$rev6_target_split),
           rtype       => 'PTR',
           rttl        => $ttl,
-          rcontent    => "${rname}.${target_zone}.",
+          rcontent    => "${rname}.${target_zone}.".downcase(),
         }
       }
     }
