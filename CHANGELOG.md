@@ -1,7 +1,13 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.3.0 (7 March 2026)
+## Version: 0.3.1 (8 March 2026)
+* Merge pull request #8 from cirrax/dev_cirrax ([fd1d55e](https://github.com/cirrax/puppet-knot/commit/fd1d55e920c5c5413f481ac9ea2abe0fce21e275))
+* use downcase for PTR records ([6322b67](https://github.com/cirrax/puppet-knot/commit/6322b670eec57765e740126f7331348c0c806421))
+* fix README ([1dda699](https://github.com/cirrax/puppet-knot/commit/1dda69950f94c0539260ed2fee48661924ce4183))
+
+## Version: v0.3.0 (7 March 2026)
+* Release v0.3.0 ([40e1443](https://github.com/cirrax/puppet-knot/commit/40e144399baecbd808e5fdb6319ad8075a081a7d))
 * Merge pull request #7 from cirrax/dev_cirrax ([ebf2739](https://github.com/cirrax/puppet-knot/commit/ebf2739574d7e16bb7976eaa5f48769613f6a041))
 * records/network: add possibility to add reverse PTR records ([26dc637](https://github.com/cirrax/puppet-knot/commit/26dc637d53cceaf7ad2bd4733c8f754f2c149eae))
 * knot::domain: add the abbility to generate a whole set of records ([5937838](https://github.com/cirrax/puppet-knot/commit/5937838a3edba011ce09d5c3063a391f051ef156))
