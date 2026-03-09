@@ -33,6 +33,15 @@ Puppet::Type.newtype(:knot_zone) do
     defaultto :false
   end
 
+  newparam(:serial_policy) do
+    desc 'specify how the serial is incremented after a dns change. Possible values are:
+          increment: increment existing serial by one
+          unixtime: set the serial to the current unix time
+         '
+    newvalues('increment', 'unixtime')
+    defaultto 'increment'
+  end
+
   newparam(:manage_records, boolean: true, parent: Puppet::Parameter::Boolean) do
     desc 'If puppet shall manage all zone records for the domain (any records not managed with puppet will be purged).
          The default is true, to manage the SOA record and all zone records through puppet for the zone.
@@ -153,6 +162,7 @@ Puppet::Type.newtype(:knot_zone) do
        content_filter
        show_diff
        local_subzones
+       serial_policy
        manage_records].each do |p|
       knot_zone_private_opts[p] = self[p] unless self[p].nil?
     end

@@ -80,6 +80,15 @@ Puppet::Type.type(:knot_zone_private).provide(
       knotc(knotc_options, 'zone-abort', "#{resource[:name]}.")
       raise Puppet::Error, "update of knot using knotc failed (aborted any open session) #{e}"
     end
+
+    # we already incremented serial above. if unixtime is specified, we continue to set
+    return unless resource[:serial_policy].to_s == 'unixtime'
+
+    begin
+      knotc(knotc_options, 'zone-serial-set', "#{resource[:name]}.", Time.now.to_i)
+    rescue Puppet::Error
+      # we already incremented above, so we can ignore
+    end
   end
 
   def content
