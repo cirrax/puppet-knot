@@ -1,7 +1,12 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.3.1 (8 March 2026)
+## Version: 0.3.2 (9 March 2026)
+* Merge pull request #9 from cirrax/dev_cirrax ([8a0dccb](https://github.com/cirrax/puppet-knot/commit/8a0dccb08bbd546eda9dafcb2ddeec46e60c50da))
+* knot_zone: add parameter to set serial to unixtime ([7c060bd](https://github.com/cirrax/puppet-knot/commit/7c060bd52afd1b43bf54639ba5b413d9f5576249))
+
+## Version: v0.3.1 (8 March 2026)
+* Release v0.3.1 ([fcf259f](https://github.com/cirrax/puppet-knot/commit/fcf259f53cf6f1e2247409722bc392470e0ed247))
 * Merge pull request #8 from cirrax/dev_cirrax ([fd1d55e](https://github.com/cirrax/puppet-knot/commit/fd1d55e920c5c5413f481ac9ea2abe0fce21e275))
 * use downcase for PTR records ([6322b67](https://github.com/cirrax/puppet-knot/commit/6322b670eec57765e740126f7331348c0c806421))
 * fix README ([1dda699](https://github.com/cirrax/puppet-knot/commit/1dda69950f94c0539260ed2fee48661924ce4183))
