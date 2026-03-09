@@ -159,9 +159,15 @@ describe 'knot::records::mail' do
 
     it {
       if params[:dmarc_authorization]
+        rtarget = if params[:rname].to_s == '.'
+                    params[:target_zone]
+                  else
+                    "#{params[:rname]}.#{params[:target_zone]}"
+                  end
+
         is_expected.to contain_knot_record("dmarc authorization: #{title}")
           .with_target_zone(params[:dmarc_authorization]['target_zone'])
-          .with_rname("#{params[:target_zone]}._report._dmarc")
+          .with_rname("#{rtarget}._report._dmarc")
           .with_rttl(params[:ttl])
           .with_rtype('TXT')
           .with_rcontent("\"#{params[:dmarc_authorization]['record']}\"")

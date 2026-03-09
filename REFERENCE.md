@@ -1895,19 +1895,19 @@ The following parameters are available in the `knot::records::mail` defined type
 
 ##### <a name="-knot--records--mail--rname"></a>`rname`
 
-Data type: `Optional[String[1]]`
+Data type: `String[1]`
 
-the hostname to add
+the name to add, if undef the target zone is taken
 
-Default value: `undef`
+Default value: `'.'`
 
 ##### <a name="-knot--records--mail--target_zone"></a>`target_zone`
 
-Data type: `Optional[String[1]]`
+Data type: `String[1]`
 
-the target zone to add the records
+the target zone to add the records to
 
-Default value: `undef`
+Default value: `$title`
 
 ##### <a name="-knot--records--mail--mailserver"></a>`mailserver`
 
