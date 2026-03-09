@@ -11,9 +11,9 @@
 # here (eg in hiera).
 #
 # @param rname
-#  the hostname to add
+#  the name to add, if undef the target zone is taken
 # @param target_zone
-#  the target zone to add the records
+#  the target zone to add the records to
 # @param mailserver
 #  target mailservers for mx record
 # @param ttl
@@ -88,8 +88,8 @@
 #  see https://dmarc.org/2015/08/receiving-dmarc-reports-outside-your-domain
 #
 define knot::records::mail (
-  Optional[String[1]]                        $rname               = undef,
-  Optional[String[1]]                        $target_zone         = undef,
+  String[1]                                  $rname               = '.',
+  String[1]                                  $target_zone         = $title,
   Optional[Array[Knot::Record::Mx]]          $mailserver          = undef,
   Optional[Integer]                          $ttl                 = undef,
   Optional[Array[Knot::Record::Srv]]         $autodiscover        = undef,
@@ -108,9 +108,6 @@ define knot::records::mail (
   Optional[Array[String[1]]]                 $dmarc_policy        = undef,
   Optional[Knot::Record::Dmarc_auth]         $dmarc_authorization = undef,
 ) {
-  $_target_zone = pick($target_zone, knot::zone($title))
-  $_rname       = pick($rname, knot::hname($title))
-
   include knot::records::defaults::mail
 
   $_mailserver = pick($mailserver, $knot::records::defaults::mail::mailserver)
@@ -133,8 +130,8 @@ define knot::records::mail (
 
   $_mailserver.each | Integer $i, Knot::Record::Mx $v | {
     knot_record { "mail MX: ${title} (${i})":
-      target_zone => $_target_zone,
-      rname       => $_rname,
+      target_zone => $target_zone,
+      rname       => $rname,
       rttl        => $_ttl,
       rtype       => 'MX',
       rcontent    => "${v['prio']} ${v['target']}",
@@ -144,8 +141,8 @@ define knot::records::mail (
   if $_spf {
     $spf_rtypes.each | String[1] $sr | {
       knot_record { "spf (${sr}): ${title}":
-        target_zone => $_target_zone,
-        rname       => $_rname,
+        target_zone => $target_zone,
+        rname       => $rname,
         rttl        => $_ttl,
         rtype       => $sr,
         rcontent    => ['"', ["v=${$_spf['version']}", $_spf['mechanism'], $_spf['modifier']].join(' '),'"'].join(''),
@@ -155,7 +152,7 @@ define knot::records::mail (
 
   if $_autoconfig {
     knot_record { "autoconfig: ${title}":
-      target_zone => $_target_zone,
+      target_zone => $target_zone,
       rname       => 'autoconfig',
       rttl        => $_ttl,
       rtype       => 'CNAME',
@@ -164,56 +161,56 @@ define knot::records::mail (
   }
 
   knot::records::caa { "mail CAA ${title}":
-    target_zone => $_target_zone,
-    rname       => $_rname,
+    target_zone => $target_zone,
+    rname       => $rname,
     caa         => $_caa,
   }
 
   knot::records::srv { "autodiscover ${title}":
-    target_zone => $_target_zone,
-    rname       => $_rname,
+    target_zone => $target_zone,
+    rname       => $rname,
     srv         => $_autodiscover,
     service     => [{ 'port' => 'autodiscover', 'proto' => 'tcp' }],
   }
 
   knot::records::srv { "submission ${title}":
-    target_zone => $_target_zone,
-    rname       => $_rname,
+    target_zone => $target_zone,
+    rname       => $rname,
     srv         => $_submission,
     service     => [{ 'port' => 'submission', 'proto' => 'tcp' }],
   }
 
   knot::records::srv { "imaps ${title}":
-    target_zone => $_target_zone,
-    rname       => $_rname,
+    target_zone => $target_zone,
+    rname       => $rname,
     srv         => $_imaps,
     service     => [{ 'port' => 'imaps', 'proto' => 'tcp' }],
   }
 
   knot::records::srv { "imap ${title}":
-    target_zone => $_target_zone,
-    rname       => $_rname,
+    target_zone => $target_zone,
+    rname       => $rname,
     srv         => $_imap,
     service     => [{ 'port' => 'imap', 'proto' => 'tcp' }],
   }
 
   knot::records::srv { "pop3s ${title}":
-    target_zone => $_target_zone,
-    rname       => $_rname,
+    target_zone => $target_zone,
+    rname       => $rname,
     srv         => $_pop3s,
     service     => [{ 'port' => 'pop3s', 'proto' => 'tcp' }],
   }
 
   knot::records::srv { "pop3 ${title}":
-    target_zone => $_target_zone,
-    rname       => $_rname,
+    target_zone => $target_zone,
+    rname       => $rname,
     srv         => $_pop3,
     service     => [{ 'port' => 'pop3', 'proto' => 'tcp' }],
   }
 
   $_dkim_keys.each | String[1] $k, Array[String[1]] $v | {
     knot_record { "dkim key ${k} for ${title}":
-      target_zone => $_target_zone,
+      target_zone => $target_zone,
       rname       => "${k}._domainkey",
       rttl        => $_ttl,
       rtype       => 'TXT',
@@ -223,7 +220,7 @@ define knot::records::mail (
 
   if $_dkim_policy {
     knot_record { "dkim policy: ${title}":
-      target_zone => $_target_zone,
+      target_zone => $target_zone,
       rname       => '_domainkey',
       rttl        => $_ttl,
       rtype       => 'TXT',
@@ -233,7 +230,7 @@ define knot::records::mail (
 
   if $_adsp_policy {
     knot_record { "adsp policy: ${title}":
-      target_zone => $_target_zone,
+      target_zone => $target_zone,
       rname       => '_adsp._domainkey',
       rttl        => $_ttl,
       rtype       => 'TXT',
@@ -242,7 +239,7 @@ define knot::records::mail (
   }
   if $_dmarc_policy {
     knot_record { "dmarc policy: ${title}":
-      target_zone => $_target_zone,
+      target_zone => $target_zone,
       rname       => '_dmarc',
       rttl        => $_ttl,
       rtype       => 'TXT',
@@ -250,9 +247,15 @@ define knot::records::mail (
     }
   }
   if $_dmarc_authorization {
+    if $rname == '.' {
+      $_rtarget = $target_zone
+    } else {
+      $_rtarget = "${rname}.${target_zone}"
+    }
+
     knot_record { "dmarc authorization: ${title}":
       target_zone => $_dmarc_authorization['target_zone'],
-      rname       => "${_target_zone}._report._dmarc",
+      rname       => "${_rtarget}._report._dmarc",
       rttl        => $_ttl,
       rtype       => 'TXT',
       rcontent    => "\"${_dmarc_authorization['record']}\"",
