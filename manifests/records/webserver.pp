@@ -31,7 +31,7 @@
 #  default from knot::records::defaults::webserver
 # @param tlsa_service
 #  tlsa services to create tlsa records for (using define knot::records::tlsa)
-#  default from knot::records::defaults::webserver
+#  default from knot::records::defaults::webserver (port 443, tcp)
 #
 define knot::records::webserver (
   Optional[String[1]]                         $rname        = undef,

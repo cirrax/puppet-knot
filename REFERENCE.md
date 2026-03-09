@@ -854,7 +854,7 @@ Data type: `Array[Knot::Record::Service]`
 
 tlsa service records to create (using define knot::records::tlsa)
 
-Default value: `[]`
+Default value: `[{ 'port' => 443, 'proto' => 'tcp' }]`
 
 ## Defined types
 
@@ -2383,7 +2383,7 @@ Default value: `undef`
 Data type: `Optional[Array[Knot::Record::Service]]`
 
 tlsa services to create tlsa records for (using define knot::records::tlsa)
-default from knot::records::defaults::webserver
+default from knot::records::defaults::webserver (port 443, tcp)
 
 Default value: `undef`
 
