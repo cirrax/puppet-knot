@@ -8,6 +8,7 @@ describe 'knot::domain' do
       manage_zone: false,
       zone_records: [],
       zone_nameservers_ttl: 3600,
+      zone_serial_policy: 'increment',
       zone_nameservers: [],
       zone_subzones: {},
       local_subzones: [] }
@@ -22,6 +23,7 @@ describe 'knot::domain' do
       if params[:manage_zone]
         is_expected.to contain_knot_zone(params[:domain])
           .with_zone_ensure(params[:ensure])
+          .with_serial_policy(params[:zone_serial_policy])
           .with_manage_records(params[:zone_manage_records])
           .with_local_subzones(params[:local_subzones])
         if params[:ensure] == 'present'
@@ -121,6 +123,7 @@ describe 'knot::domain' do
                                  ensure: 'present',
                                  domain: 'example.net',
                                  manage_zone: true,
+                                 serial_policy: 'unixtime',
                                  zone_records: [{ rname: 'test', rcontent: '1.1.1.1' }, { rname: 'test', rtype: 'AAAA', rcontent: '::1' }],
                                  zone_nameservers: ['ns1.example.org.', 'ns2.example.org.'],
                                  zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } },

@@ -1182,6 +1182,7 @@ The following parameters are available in the `knot::domain` defined type:
 * [`manage_zone`](#-knot--domain--manage_zone)
 * [`zone_content_filter`](#-knot--domain--zone_content_filter)
 * [`zone_show_diff`](#-knot--domain--zone_show_diff)
+* [`zone_serial_policy`](#-knot--domain--zone_serial_policy)
 * [`zone_manage_records`](#-knot--domain--zone_manage_records)
 * [`zone_soa_ttl`](#-knot--domain--zone_soa_ttl)
 * [`zone_soa_class`](#-knot--domain--zone_soa_class)
@@ -1644,6 +1645,15 @@ false. Since zones can be huge, use this only for debugging
 remark: only relevant if $manage_zone set to true
 
 Default value: `undef`
+
+##### <a name="-knot--domain--zone_serial_policy"></a>`zone_serial_policy`
+
+Data type: `Enum['increment', 'unixtime']`
+
+serial policy to use if records are managed with puppet.
+(this is separate to the serial-policy set in knot, which is used for knot dynamic update or automatic dns signing)
+
+Default value: `'increment'`
 
 ##### <a name="-knot--domain--zone_manage_records"></a>`zone_manage_records`
 
@@ -2447,6 +2457,7 @@ The following parameters are available in the `knot_zone` type.
 * [`local_subzones`](#-knot_zone--local_subzones)
 * [`manage_records`](#-knot_zone--manage_records)
 * [`name`](#-knot_zone--name)
+* [`serial_policy`](#-knot_zone--serial_policy)
 * [`show_diff`](#-knot_zone--show_diff)
 * [`soa_class`](#-knot_zone--soa_class)
 * [`soa_expire`](#-knot_zone--soa_expire)
@@ -2487,6 +2498,16 @@ Default value: `true`
 namevar
 
 name of the zone name as namevar
+
+##### <a name="-knot_zone--serial_policy"></a>`serial_policy`
+
+Valid values: `increment`, `unixtime`
+
+specify how the serial is incremented after a dns change. Possible values are:
+increment: increment existing serial by one
+unixtime: set the serial to the current unix time
+
+Default value: `increment`
 
 ##### <a name="-knot_zone--show_diff"></a>`show_diff`
 
@@ -2579,6 +2600,7 @@ The following parameters are available in the `knot_zone_private` type.
 * [`manage_records`](#-knot_zone_private--manage_records)
 * [`name`](#-knot_zone_private--name)
 * [`provider`](#-knot_zone_private--provider)
+* [`serial_policy`](#-knot_zone_private--serial_policy)
 * [`show_diff`](#-knot_zone_private--show_diff)
 
 ##### <a name="-knot_zone_private--content_filter"></a>`content_filter`
@@ -2612,6 +2634,16 @@ name of the zone name as namevar
 
 The specific backend to use for this `knot_zone_private` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
+
+##### <a name="-knot_zone_private--serial_policy"></a>`serial_policy`
+
+Valid values: `increment`, `unixtime`
+
+specify how the serial is incremented after a dns change. Possible values are:
+increment: increment existing serial by one
+unixtime: set the serial to the current unix time
+
+Default value: `increment`
 
 ##### <a name="-knot_zone_private--show_diff"></a>`show_diff`
 

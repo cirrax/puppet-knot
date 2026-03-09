@@ -127,6 +127,9 @@
 #   Whether to display differences when the zone changes, defaulting to
 #   false. Since zones can be huge, use this only for debugging
 #   remark: only relevant if $manage_zone set to true
+# @param zone_serial_policy
+#   serial policy to use if records are managed with puppet.
+#   (this is separate to the serial-policy set in knot, which is used for knot dynamic update or automatic dns signing)
 # @param zone_manage_records
 #   If puppet shall manage all zone records for the domain (any records not managed with puppet will be purged).
 #   The default is true, to manage the SOA record and all zone records through puppet for the zone.
@@ -246,6 +249,7 @@ define knot::domain (
   Boolean                                                               $manage_zone          = false,
   Optional[String[1]]                                                   $zone_content_filter  = undef,
   Optional[Boolean]                                                     $zone_show_diff       = undef,
+  Enum['increment', 'unixtime']                                         $zone_serial_policy   = 'increment',
   Optional[Boolean]                                                     $zone_manage_records  = undef,
   Optional[String[1]]                                                   $zone_soa_ttl         = undef,
   Optional[String[1]]                                                   $zone_soa_class       = undef,
@@ -322,6 +326,7 @@ define knot::domain (
       zone_ensure    => $ensure,
       content_filter => $zone_content_filter,
       show_diff      => $zone_show_diff,
+      serial_policy  => $zone_serial_policy,
       manage_records => $zone_manage_records,
       soa_ttl        => $zone_soa_ttl,
       soa_class      => $zone_soa_class,

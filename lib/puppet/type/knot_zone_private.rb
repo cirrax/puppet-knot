@@ -40,6 +40,15 @@ Puppet::Type.newtype(:knot_zone_private) do
     defaultto :false
   end
 
+  newparam(:serial_policy) do
+    desc 'specify how the serial is incremented after a dns change. Possible values are:
+          increment: increment existing serial by one
+          unixtime: set the serial to the current unix time
+         '
+    newvalues('increment', 'unixtime')
+    defaultto 'increment'
+  end
+
   newparam(:local_subzones) do
     desc 'local subzones for which we query NS ans CDS records and add dem to the local zone, only works if the subzone is configured on current node'
     defaultto []
