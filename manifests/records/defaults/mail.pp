@@ -16,7 +16,6 @@
 #    'target_port' => 443,
 #    'target' => 'autodiscover.hostname.com'
 #  } 
-#  default from knot::records::defaults::mail
 # @param autoconfig
 #  target to config for autconfig (eg. Thunderbird)
 #  a CNAME record is created
