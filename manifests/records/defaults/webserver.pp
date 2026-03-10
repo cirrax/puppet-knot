@@ -25,6 +25,6 @@ class knot::records::defaults::webserver (
   Integer                                     $ttl          = 3600,
   Array[Knot::Record::Caa]                    $caa          = [],
   Array[Knot::Record::Tlsa]                   $tlsa         = [],
-  Array[Knot::Record::Service]                $tlsa_service = [],
+  Array[Knot::Record::Service]                $tlsa_service = [{ 'port' => 443, 'proto' => 'tcp' }],
 ) {
 }
