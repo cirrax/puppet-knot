@@ -13,6 +13,8 @@
 * [`knot::records::defaults::srv`](#knot--records--defaults--srv): defaults for srv records
 * [`knot::records::defaults::tlsa`](#knot--records--defaults--tlsa): defaults for tlsa records
 * [`knot::records::defaults::webserver`](#knot--records--defaults--webserver): default values for knot::records::webserver
+* [`knot::records::sshfp::export`](#knot--records--sshfp--export): export sshfp keys for inclusion in dns
+* [`knot::records::sshfp::import`](#knot--records--sshfp--import): import exported sshfp records
 
 ### Defined types
 
@@ -855,6 +857,101 @@ Data type: `Array[Knot::Record::Service]`
 tlsa service records to create (using define knot::records::tlsa)
 
 Default value: `[{ 'port' => 443, 'proto' => 'tcp' }]`
+
+### <a name="knot--records--sshfp--export"></a>`knot::records::sshfp::export`
+
+export sshfp keys for inclusion in dns
+
+#### Parameters
+
+The following parameters are available in the `knot::records::sshfp::export` class:
+
+* [`domains`](#-knot--records--sshfp--export--domains)
+* [`hname`](#-knot--records--sshfp--export--hname)
+* [`additional_fqdn`](#-knot--records--sshfp--export--additional_fqdn)
+* [`fingerprints`](#-knot--records--sshfp--export--fingerprints)
+* [`selector`](#-knot--records--sshfp--export--selector)
+* [`ttl`](#-knot--records--sshfp--export--ttl)
+
+##### <a name="-knot--records--sshfp--export--domains"></a>`domains`
+
+Data type: `Array[String[1]]`
+
+the domains we export the host for
+for each domain we export a setting
+with "${hname}.${domain}"
+
+Default value: `[$facts['networking']['domain']]`
+
+##### <a name="-knot--records--sshfp--export--hname"></a>`hname`
+
+Data type: `String[1]`
+
+the hostname we export for each of the domain
+
+Default value: `$facts['networking']['hostname']`
+
+##### <a name="-knot--records--sshfp--export--additional_fqdn"></a>`additional_fqdn`
+
+Data type: `Array[Tuple[String[1], String[1]]]`
+
+Tuples of hostname, domain of additional fqdns we export
+
+Default value: `[]`
+
+##### <a name="-knot--records--sshfp--export--fingerprints"></a>`fingerprints`
+
+Data type: `Optional[Array[String[1]]]`
+
+fingerprints to export
+if unset, we take the values from the ssh fact
+
+Default value: `undef`
+
+##### <a name="-knot--records--sshfp--export--selector"></a>`selector`
+
+Data type: `String[1]`
+
+tag to set, let's you filter the import
+the tag is combined with the domain
+
+Default value: `'knot-sshfp'`
+
+##### <a name="-knot--records--sshfp--export--ttl"></a>`ttl`
+
+Data type: `Integer`
+
+the ttl to set
+
+Default value: `3600`
+
+### <a name="knot--records--sshfp--import"></a>`knot::records::sshfp::import`
+
+import exported sshfp records
+
+#### Parameters
+
+The following parameters are available in the `knot::records::sshfp::import` class:
+
+* [`domains`](#-knot--records--sshfp--import--domains)
+* [`selector`](#-knot--records--sshfp--import--selector)
+
+##### <a name="-knot--records--sshfp--import--domains"></a>`domains`
+
+Data type: `Array[String[1]]`
+
+the domains we import
+note: without setting nothing will be imported !
+
+Default value: `['int.cirrax.com']`
+
+##### <a name="-knot--records--sshfp--import--selector"></a>`selector`
+
+Data type: `String[1]`
+
+the tag we import
+
+Default value: `'knot-sshfp'`
 
 ## Defined types
 
