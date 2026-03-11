@@ -13,6 +13,7 @@
 * [`knot::records::defaults::srv`](#knot--records--defaults--srv): defaults for srv records
 * [`knot::records::defaults::tlsa`](#knot--records--defaults--tlsa): defaults for tlsa records
 * [`knot::records::defaults::webserver`](#knot--records--defaults--webserver): default values for knot::records::webserver
+* [`knot::records::defaults::xmpp`](#knot--records--defaults--xmpp): default settings for knot::records::xmpp
 * [`knot::records::sshfp::export`](#knot--records--sshfp--export): export sshfp keys for inclusion in dns
 * [`knot::records::sshfp::import`](#knot--records--sshfp--import): import exported sshfp records
 
@@ -26,6 +27,7 @@
 * [`knot::records::srv`](#knot--records--srv): add srv records
 * [`knot::records::tlsa`](#knot--records--tlsa): add tlsa records
 * [`knot::records::webserver`](#knot--records--webserver): add webserver dns records to the domain
+* [`knot::records::xmpp`](#knot--records--xmpp): add srv records
 
 ### Resource types
 
@@ -586,7 +588,6 @@ Example:
   'target_port' => 443,
   'target' => 'autodiscover.hostname.com'
 }
-default from knot::records::defaults::mail
 
 Default value: `[]`
 
@@ -857,6 +858,118 @@ Data type: `Array[Knot::Record::Service]`
 tlsa service records to create (using define knot::records::tlsa)
 
 Default value: `[{ 'port' => 443, 'proto' => 'tcp' }]`
+
+### <a name="knot--records--defaults--xmpp"></a>`knot::records::defaults::xmpp`
+
+default settings for knot::records::xmpp
+
+#### Parameters
+
+The following parameters are available in the `knot::records::defaults::xmpp` class:
+
+* [`xmpp_client`](#-knot--records--defaults--xmpp--xmpp_client)
+* [`xmpp_client_service`](#-knot--records--defaults--xmpp--xmpp_client_service)
+* [`xmpps_client`](#-knot--records--defaults--xmpp--xmpps_client)
+* [`xmpps_client_service`](#-knot--records--defaults--xmpp--xmpps_client_service)
+* [`xmpp_server`](#-knot--records--defaults--xmpp--xmpp_server)
+* [`xmpp_server_service`](#-knot--records--defaults--xmpp--xmpp_server_service)
+* [`xmpps_server`](#-knot--records--defaults--xmpp--xmpps_server)
+* [`xmpps_server_service`](#-knot--records--defaults--xmpp--xmpps_server_service)
+* [`txt_records`](#-knot--records--defaults--xmpp--txt_records)
+* [`tlsa`](#-knot--records--defaults--xmpp--tlsa)
+* [`ttl`](#-knot--records--defaults--xmpp--ttl)
+
+##### <a name="-knot--records--defaults--xmpp--xmpp_client"></a>`xmpp_client`
+
+Data type: `Array`
+
+srv setting for SRV record of xmpp_client
+if not explicitly set { target => $dest_server } will be added.
+
+Default value: `[{ 'priority' => 0, 'weight' => 5, 'target_port' => 5222 }]`
+
+##### <a name="-knot--records--defaults--xmpp--xmpp_client_service"></a>`xmpp_client_service`
+
+Data type: `Array[Knot::Record::Service]`
+
+Array of services for xmpp_client.
+
+Default value: `[{ 'port' => 'xmpp-client', 'proto' => 'tcp' }]`
+
+##### <a name="-knot--records--defaults--xmpp--xmpps_client"></a>`xmpps_client`
+
+Data type: `Array`
+
+srv setting for SRV record of xmpps_client
+if not explicitly set { target => $dest_server } will be added.
+
+Default value: `[{ 'priority' => 0, 'weight' => 5, 'target_port' => 5223 }]`
+
+##### <a name="-knot--records--defaults--xmpp--xmpps_client_service"></a>`xmpps_client_service`
+
+Data type: `Array[Knot::Record::Service]`
+
+Array of services for xmpps_client.
+
+Default value: `[{ 'port' => 'xmpps-client', 'proto' => 'tcp' }]`
+
+##### <a name="-knot--records--defaults--xmpp--xmpp_server"></a>`xmpp_server`
+
+Data type: `Array`
+
+srv setting for SRV record of xmpp_server
+if not explicitly set { target => $dest_server } will be added.
+
+Default value: `[{ 'priority' => 0, 'weight' => 5, 'target_port' => 5269 }]`
+
+##### <a name="-knot--records--defaults--xmpp--xmpp_server_service"></a>`xmpp_server_service`
+
+Data type: `Array[Knot::Record::Service]`
+
+Array of services for xmpp_server.
+
+Default value: `[{ 'port' => 'xmpp-server', 'proto' => 'tcp' }]`
+
+##### <a name="-knot--records--defaults--xmpp--xmpps_server"></a>`xmpps_server`
+
+Data type: `Array`
+
+srv setting for SRV record of xmpps_server
+if not explicitly set { target => $dest_server } will be added.
+
+Default value: `[{ 'priority' => 0, 'weight' => 5, 'target_port' => 5270 }]`
+
+##### <a name="-knot--records--defaults--xmpp--xmpps_server_service"></a>`xmpps_server_service`
+
+Data type: `Array[Knot::Record::Service]`
+
+Array of services for xmpps_server.
+
+Default value: `[{ 'port' => 'xmpps-server', 'proto' => 'tcp' }]`
+
+##### <a name="-knot--records--defaults--xmpp--txt_records"></a>`txt_records`
+
+Data type: `Array[String[1]]`
+
+add _xmppconnect txt records.
+
+Default value: `[]`
+
+##### <a name="-knot--records--defaults--xmpp--tlsa"></a>`tlsa`
+
+Data type: `Array[Knot::Record::Tlsa]`
+
+tlsa records to create (using define knot::records::tlsa)
+
+Default value: `[]`
+
+##### <a name="-knot--records--defaults--xmpp--ttl"></a>`ttl`
+
+Data type: `Integer`
+
+the time to live (used for all records)
+
+Default value: `3600`
 
 ### <a name="knot--records--sshfp--export"></a>`knot::records::sshfp::export`
 
@@ -2481,6 +2594,166 @@ Data type: `Optional[Array[Knot::Record::Service]]`
 
 tlsa services to create tlsa records for (using define knot::records::tlsa)
 default from knot::records::defaults::webserver (port 443, tcp)
+
+Default value: `undef`
+
+### <a name="knot--records--xmpp"></a>`knot::records::xmpp`
+
+default values can be configured in the class
+knot::records::defaults::srv which is included
+here (eg in hiera).
+
+#### Parameters
+
+The following parameters are available in the `knot::records::xmpp` defined type:
+
+* [`dest_server`](#-knot--records--xmpp--dest_server)
+* [`rname`](#-knot--records--xmpp--rname)
+* [`target_zone`](#-knot--records--xmpp--target_zone)
+* [`xmpp_client`](#-knot--records--xmpp--xmpp_client)
+* [`xmpp_client_service`](#-knot--records--xmpp--xmpp_client_service)
+* [`xmpps_client`](#-knot--records--xmpp--xmpps_client)
+* [`xmpps_client_service`](#-knot--records--xmpp--xmpps_client_service)
+* [`xmpp_server`](#-knot--records--xmpp--xmpp_server)
+* [`xmpp_server_service`](#-knot--records--xmpp--xmpp_server_service)
+* [`xmpps_server`](#-knot--records--xmpp--xmpps_server)
+* [`xmpps_server_service`](#-knot--records--xmpp--xmpps_server_service)
+* [`ttl`](#-knot--records--xmpp--ttl)
+* [`txt_records`](#-knot--records--xmpp--txt_records)
+* [`tlsa`](#-knot--records--xmpp--tlsa)
+* [`tlsa_service`](#-knot--records--xmpp--tlsa_service)
+
+##### <a name="-knot--records--xmpp--dest_server"></a>`dest_server`
+
+Data type: `String[1]`
+
+the destination xmpp server
+
+##### <a name="-knot--records--xmpp--rname"></a>`rname`
+
+Data type: `Optional[String[1]]`
+
+the hostname to add
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--target_zone"></a>`target_zone`
+
+Data type: `Optional[String[1]]`
+
+the target zone to add the records
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--xmpp_client"></a>`xmpp_client`
+
+Data type: `Optional[Array]`
+
+srv setting for SRV record of xmpp_client
+if not explicitly set { target => $dest_server } will be added.
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--xmpp_client_service"></a>`xmpp_client_service`
+
+Data type: `Optional[Array[Knot::Record::Service]]`
+
+Array of services for xmpp_client.
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--xmpps_client"></a>`xmpps_client`
+
+Data type: `Optional[Array]`
+
+srv setting for SRV record of xmpps_client
+if not explicitly set { target => $dest_server } will be added.
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--xmpps_client_service"></a>`xmpps_client_service`
+
+Data type: `Optional[Array[Knot::Record::Service]]`
+
+Array of services for xmpps_client.
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--xmpp_server"></a>`xmpp_server`
+
+Data type: `Optional[Array]`
+
+srv setting for SRV record of xmpp_server
+if not explicitly set { target => $dest_server } will be added.
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--xmpp_server_service"></a>`xmpp_server_service`
+
+Data type: `Optional[Array[Knot::Record::Service]]`
+
+Array of services for xmpp_server.
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--xmpps_server"></a>`xmpps_server`
+
+Data type: `Optional[Array]`
+
+srv setting for SRV record of xmpps_server
+if not explicitly set { target => $dest_server } will be added.
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--xmpps_server_service"></a>`xmpps_server_service`
+
+Data type: `Optional[Array[Knot::Record::Service]]`
+
+Array of services for xmpps_server.
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--ttl"></a>`ttl`
+
+Data type: `Optional[Integer]`
+
+the time to live (used for all records)
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--txt_records"></a>`txt_records`
+
+Data type: `Optional[Array[String[1]]]`
+
+add _xmppconnect txt records.
+remark: deprecated but ...
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--tlsa"></a>`tlsa`
+
+Data type: `Optional[Array[Knot::Record::Tlsa]]`
+
+tlsa records to create (using define knot::records::tlsa)
+default from knot::records::defaults::xmpp
+
+Default value: `undef`
+
+##### <a name="-knot--records--xmpp--tlsa_service"></a>`tlsa_service`
+
+Data type: `Optional[Array[Knot::Record::Service]]`
+
+tlsa services to create tlsa records for (using define knot::records::tlsa)
+defaults to the target ports of $xmpps_server + $xmpps_client
 
 Default value: `undef`
 
