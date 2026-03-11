@@ -1,7 +1,18 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.3.2 (9 March 2026)
+## Version: 0.4.0 (11 March 2026)
+* Merge pull request #13 from cirrax/dev_cirrax ([998a3bc](https://github.com/cirrax/puppet-knot/commit/998a3bc110a04a5d4f6b0580595d4cf16860aaa1))
+* add xmpp srv records ([482d0cd](https://github.com/cirrax/puppet-knot/commit/482d0cd0d52cc2fa2cbaf856194657f8ad5f641e))
+* Merge pull request #12 from cirrax/dev_cirrax ([fca51a5](https://github.com/cirrax/puppet-knot/commit/fca51a57bbd9d063b4df325e90c763161ec5d1a5))
+* export/import sshfp fingerprints ([006293b](https://github.com/cirrax/puppet-knot/commit/006293b9949cf18c31271a76fceb43bbb1c8d1f1))
+* Merge pull request #11 from cirrax/dev_cirrax ([a40a497](https://github.com/cirrax/puppet-knot/commit/a40a4976307036aa155721a04ab75b0dcbf3d3aa))
+* records/webserver: add 443,tcp default for tlsa_service ([a1f7ab0](https://github.com/cirrax/puppet-knot/commit/a1f7ab0d6f91caf6a23134906d2466f0e63ae363))
+* Merge pull request #10 from cirrax/dev_cirrax ([6132c82](https://github.com/cirrax/puppet-knot/commit/6132c82c76f0f6a78ff1d876904da1e522a3acfb))
+* fix mail records somehow mixed domain and hostname ([72d4591](https://github.com/cirrax/puppet-knot/commit/72d45918456ce8e4564d19746af8ba12c65d8331))
+
+## Version: v0.3.2 (9 March 2026)
+* Release v0.3.2 ([c6e0257](https://github.com/cirrax/puppet-knot/commit/c6e025735a7d36ab20779b9b2384a146471800bc))
 * Merge pull request #9 from cirrax/dev_cirrax ([8a0dccb](https://github.com/cirrax/puppet-knot/commit/8a0dccb08bbd546eda9dafcb2ddeec46e60c50da))
 * knot_zone: add parameter to set serial to unixtime ([7c060bd](https://github.com/cirrax/puppet-knot/commit/7c060bd52afd1b43bf54639ba5b413d9f5576249))
 
