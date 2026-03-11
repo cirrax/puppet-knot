@@ -1056,7 +1056,7 @@ Data type: `Array[String[1]]`
 the domains we import
 note: without setting nothing will be imported !
 
-Default value: `['int.cirrax.com']`
+Default value: `[]`
 
 ##### <a name="-knot--records--sshfp--import--selector"></a>`selector`
 
