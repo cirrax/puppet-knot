@@ -7,10 +7,10 @@
 #   the tag we import
 #   
 class knot::records::sshfp::import (
-  Array[String[1]] $domains  = ['int.cirrax.com'],
+  Array[String[1]] $domains  = [],
   String[1]        $selector = 'knot-sshfp',
 ) {
   $domains.each | String[1] $dom | {
-    Knot_record<| tag == "${selector}_${dom}" |>
+    Knot_record<<| tag == "${selector}_${dom}" |>>
   }
 }

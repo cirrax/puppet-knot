@@ -8,7 +8,8 @@ describe 'knot::records::webserver' do
       alpn: [],
       caa: [],
       tlsa: [],
-      tlsa_service: [], }
+      tlsa_service: [],
+      https: [], }
   end
 
   shared_examples 'knot::records::webserver shared examples' do
@@ -50,6 +51,14 @@ describe 'knot::records::webserver' do
         .with_rname(params[:rname])
         .with_tlsa(params[:tlsa])
         .with_service(params[:tlsa_service])
+    }
+
+    it {
+      is_expected.to contain_knot__records__svcb("add HTTPS for #{title}")
+        .with_target_zone(params[:target_zone])
+        .with_rname(params[:rname])
+        .with_type('HTTPS')
+        .with_svcb(params[:https])
     }
   end
 

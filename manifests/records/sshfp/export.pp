@@ -45,11 +45,11 @@ class knot::records::sshfp::export (
     }
   }
 
-  $additional_fqdn.each | String[1] $afqdn | {
+  $additional_fqdn.each | Tuple[String[1], String[1]] $afqdn | {
     $_fingerprints.each | String[1] $fp | {
       @@knot_record { "sshfp for ${afqdn[0]}.${afqdn[1]} (${fp})":
-        target_zone => $afqdn[0],
-        rname       => $afqdn[1],
+        target_zone => $afqdn[1],
+        rname       => $afqdn[0],
         rttl        => $ttl,
         rtype       => 'SSHFP',
         rcontent    => $fp.upcase(),

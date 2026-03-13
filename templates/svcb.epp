@@ -1,0 +1,12 @@
+<%- | Integer                                            $priority,
+      String[1]                                          $target,
+      Optional[Array[String[1]]]                         $alpn = undef,
+      Optional[Integer]                                  $port = undef,
+      Optional[Array[Stdlib::IP::Address::V4::Nosubnet]] $ipv4hint = undef,
+      Optional[Array[Stdlib::IP::Address::V6::Nosubnet]] $ipv6hint = undef,
+| -%>
+<%= $priority %> <%= $target -%>
+<%- if $alpn { %> alpn="<%= $alpn.join(',') %>"<% } -%>
+<%- if $port { %> port="<%= $port %>"<% } -%>
+<%- if $ipv4hint { %> ipv4hint=<%= $ipv4hint.join(',') %><% } -%>
+<%- if $ipv6hint { %> ipv6hint=<%= $ipv6hint.join(',') %><% } -%>

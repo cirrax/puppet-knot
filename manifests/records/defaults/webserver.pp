@@ -17,6 +17,8 @@
 #  tlsa records to create (using define knot::records::tlsa)
 # @param tlsa_service 
 #  tlsa service records to create (using define knot::records::tlsa)
+# @param https
+#  https service records to create (using define knot::records::svcb)
 #
 class knot::records::defaults::webserver (
   Optional[Stdlib::IP::Address::V4::Nosubnet] $ipv4         = undef,
@@ -26,5 +28,6 @@ class knot::records::defaults::webserver (
   Array[Knot::Record::Caa]                    $caa          = [],
   Array[Knot::Record::Tlsa]                   $tlsa         = [],
   Array[Knot::Record::Service]                $tlsa_service = [{ 'port' => 443, 'proto' => 'tcp' }],
+  Array[Knot::Record::Svcb]                   $https        = [],
 ) {
 }

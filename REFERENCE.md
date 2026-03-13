@@ -25,6 +25,7 @@
 * [`knot::records::mail`](#knot--records--mail): add mail dns records to the domain
 * [`knot::records::network`](#knot--records--network): convert a hash into dns records
 * [`knot::records::srv`](#knot--records--srv): add srv records
+* [`knot::records::svcb`](#knot--records--svcb): add svcb records
 * [`knot::records::tlsa`](#knot--records--tlsa): add tlsa records
 * [`knot::records::webserver`](#knot--records--webserver): add webserver dns records to the domain
 * [`knot::records::xmpp`](#knot--records--xmpp): add srv records
@@ -61,6 +62,7 @@
 * [`Knot::Record::Csync`](#Knot--Record--Csync): CSYNC record type
 * [`Knot::Record::Dmarc_auth`](#Knot--Record--Dmarc_auth): Dmarc report authorization
 * [`Knot::Record::Mx`](#Knot--Record--Mx): MX record type
+* [`Knot::Record::SVCB`](#Knot--Record--SVCB): SVCB/HTTPS record type
 * [`Knot::Record::Service`](#Knot--Record--Service): service RR  such as used for TLSA or SRV
 * [`Knot::Record::Spf`](#Knot--Record--Spf): SPF record type
 * [`Knot::Record::Srv`](#Knot--Record--Srv): SRV record type
@@ -802,6 +804,7 @@ The following parameters are available in the `knot::records::defaults::webserve
 * [`caa`](#-knot--records--defaults--webserver--caa)
 * [`tlsa`](#-knot--records--defaults--webserver--tlsa)
 * [`tlsa_service`](#-knot--records--defaults--webserver--tlsa_service)
+* [`https`](#-knot--records--defaults--webserver--https)
 
 ##### <a name="-knot--records--defaults--webserver--ipv4"></a>`ipv4`
 
@@ -858,6 +861,14 @@ Data type: `Array[Knot::Record::Service]`
 tlsa service records to create (using define knot::records::tlsa)
 
 Default value: `[{ 'port' => 443, 'proto' => 'tcp' }]`
+
+##### <a name="-knot--records--defaults--webserver--https"></a>`https`
+
+Data type: `Array[Knot::Record::Svcb]`
+
+https service records to create (using define knot::records::svcb)
+
+Default value: `[]`
 
 ### <a name="knot--records--defaults--xmpp"></a>`knot::records::defaults::xmpp`
 
@@ -1056,7 +1067,7 @@ Data type: `Array[String[1]]`
 the domains we import
 note: without setting nothing will be imported !
 
-Default value: `['int.cirrax.com']`
+Default value: `[]`
 
 ##### <a name="-knot--records--sshfp--import--selector"></a>`selector`
 
@@ -2437,6 +2448,62 @@ default from knot::records::defaults::srv
 
 Default value: `undef`
 
+### <a name="knot--records--svcb"></a>`knot::records::svcb`
+
+default values can be configured in the class
+knot::records::defaults::tlsa which is included
+here (eg in hiera).
+
+#### Parameters
+
+The following parameters are available in the `knot::records::svcb` defined type:
+
+* [`rname`](#-knot--records--svcb--rname)
+* [`target_zone`](#-knot--records--svcb--target_zone)
+* [`type`](#-knot--records--svcb--type)
+* [`svcb`](#-knot--records--svcb--svcb)
+* [`ttl`](#-knot--records--svcb--ttl)
+
+##### <a name="-knot--records--svcb--rname"></a>`rname`
+
+Data type: `Optional[String[1]]`
+
+the hostname to add
+
+Default value: `undef`
+
+##### <a name="-knot--records--svcb--target_zone"></a>`target_zone`
+
+Data type: `Optional[String[1]]`
+
+the target zone to add the records
+
+Default value: `undef`
+
+##### <a name="-knot--records--svcb--type"></a>`type`
+
+Data type: `Enum['SVCB','HTTPS']`
+
+one of SCVB or HTTPS
+
+Default value: `'SVCB'`
+
+##### <a name="-knot--records--svcb--svcb"></a>`svcb`
+
+Data type: `Array[Knot::Record::Svcb]`
+
+the SVCB record
+
+Default value: `[]`
+
+##### <a name="-knot--records--svcb--ttl"></a>`ttl`
+
+Data type: `Integer`
+
+the time to live
+
+Default value: `3600`
+
 ### <a name="knot--records--tlsa"></a>`knot::records::tlsa`
 
 default values can be configured in the class
@@ -2517,6 +2584,7 @@ The following parameters are available in the `knot::records::webserver` defined
 * [`caa`](#-knot--records--webserver--caa)
 * [`tlsa`](#-knot--records--webserver--tlsa)
 * [`tlsa_service`](#-knot--records--webserver--tlsa_service)
+* [`https`](#-knot--records--webserver--https)
 
 ##### <a name="-knot--records--webserver--rname"></a>`rname`
 
@@ -2594,6 +2662,17 @@ Data type: `Optional[Array[Knot::Record::Service]]`
 
 tlsa services to create tlsa records for (using define knot::records::tlsa)
 default from knot::records::defaults::webserver (port 443, tcp)
+
+Default value: `undef`
+
+##### <a name="-knot--records--webserver--https"></a>`https`
+
+Data type: `Optional[Array[Knot::Record::Svcb]]`
+
+https record to create (using define knot::records::svcb)
+for each record, ipv4hint and ipv6hint is added as long
+as you do not set it here (hint, set to ~ for not setting it)
+default from knot::records::defaults::webserver
 
 Default value: `undef`
 
@@ -3551,6 +3630,26 @@ Alias of
 Struct[{
   'prio'   => Integer[0,255],
   'target' => String[1],
+}]
+```
+
+### <a name="Knot--Record--SVCB"></a>`Knot::Record::SVCB`
+
+SVCB/HTTPS record type
+
+* **See also**
+  * https://www.rfc-editor.org/rfc/rfc9460
+
+Alias of
+
+```puppet
+Struct[{
+  'priority' => Optional[Integer],
+  'target'   => Optional[String[1]],
+  'port'     => Optional[Integer],
+  'alpn'     => Optional[Array[String[1]]],
+  'ipv4hint' => Optional[Array[Stdlib::IP::Address::V4::Nosubnet]],
+  'ipv6hint' => Optional[Array[Stdlib::IP::Address::V6::Nosubnet]],
 }]
 ```
 

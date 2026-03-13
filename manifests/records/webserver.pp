@@ -32,6 +32,11 @@
 # @param tlsa_service
 #  tlsa services to create tlsa records for (using define knot::records::tlsa)
 #  default from knot::records::defaults::webserver (port 443, tcp)
+# @param https
+#  https record to create (using define knot::records::svcb)
+#  for each record, ipv4hint and ipv6hint is added as long
+#  as you do not set it here (hint, set to ~ for not setting it)
+#  default from knot::records::defaults::webserver
 #
 define knot::records::webserver (
   Optional[String[1]]                         $rname        = undef,
@@ -43,6 +48,7 @@ define knot::records::webserver (
   Optional[Array[Knot::Record::Caa]]          $caa          = undef,
   Optional[Array[Knot::Record::Tlsa]]         $tlsa         = undef,
   Optional[Array[Knot::Record::Service]]      $tlsa_service = undef,
+  Optional[Array[Knot::Record::Svcb]]         $https        = undef,
 ) {
   $_target_zone = pick($target_zone, knot::zone($title))
   $_rname       = pick($rname, knot::hname($title))
@@ -56,6 +62,7 @@ define knot::records::webserver (
   $_caa = pick($caa, $knot::records::defaults::webserver::caa)
   $_tlsa = pick($tlsa, $knot::records::defaults::webserver::tlsa)
   $_tlsa_service = pick($tlsa_service, $knot::records::defaults::webserver::tlsa_service)
+  $_https = pick($https, $knot::records::defaults::webserver::https)
 
   $_ttl = pick($ttl, $knot::records::defaults::webserver::ttl)
 
@@ -92,14 +99,17 @@ define knot::records::webserver (
     service     => $_tlsa_service,
   }
 
-  # TODO:
-  # $_alpn.each | Integer $i, String[1] $v | {
-  #   knot_record { "alpn: ${title} (${i})":
-  #     target_zone => $_target_zone,
-  #     rname       => $_rname,
-  #     rttl        => $_ttl,
-  #     rtype       => 'HTTPS',
-  #     rcontent    => "0 issue ${v}",
-  #   }
-  # }
+  $_https_default = ['ipv4', 'ipv6'].reduce({}) | $memo, $k | {
+    if getvar("_${k}") {
+      $memo + { "${k}hint" => [getvar("_${k}")] }
+    } else {
+      $memo
+    }
+  }
+  knot::records::svcb { "add HTTPS for ${title}":
+    target_zone => $_target_zone,
+    rname       => $_rname,
+    type        => 'HTTPS',
+    svcb        => $_https.map | $r | { $_https_default + $r },
+  }
 }
