@@ -1,7 +1,13 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.4.0 (11 March 2026)
+## Version: 0.5.0 (13 March 2026)
+* Merge pull request #14 from cirrax/dev_cirrax ([a78f5f8](https://github.com/cirrax/puppet-knot/commit/a78f5f8041eb230a750a625ff21fd48ab4dd8793))
+* add initial svcb/https record ([7db10d8](https://github.com/cirrax/puppet-knot/commit/7db10d856dd4897f5510df59cd64e5fa58ed3eba))
+* fix sshfp records (import/export) ([105403f](https://github.com/cirrax/puppet-knot/commit/105403fd2aee3561f327a63ac7a6df249537dd13))
+
+## Version: v0.4.0 (11 March 2026)
+* Release v0.4.0 ([0dcbbb4](https://github.com/cirrax/puppet-knot/commit/0dcbbb4b71472d619b9edee5910f372c485f6e8b))
 * Merge pull request #13 from cirrax/dev_cirrax ([998a3bc](https://github.com/cirrax/puppet-knot/commit/998a3bc110a04a5d4f6b0580595d4cf16860aaa1))
 * add xmpp srv records ([482d0cd](https://github.com/cirrax/puppet-knot/commit/482d0cd0d52cc2fa2cbaf856194657f8ad5f641e))
 * Merge pull request #12 from cirrax/dev_cirrax ([fca51a5](https://github.com/cirrax/puppet-knot/commit/fca51a57bbd9d063b4df325e90c763161ec5d1a5))
