@@ -7,6 +7,8 @@ describe 'knot::records::mail' do
     { mailserver: [],
       ttl: 3600,
       caa: [],
+      tlsa: [],
+      tlsa_service: [],
       submission: [],
       autodiscover: [],
       imaps: [],
@@ -111,6 +113,15 @@ describe 'knot::records::mail' do
         .with_rname(params[:rname])
         .with_srv(params[:pop3])
         .with_service([{ 'port' => 'pop3', 'proto' => 'tcp' }])
+    }
+
+    it {
+      is_expected.to contain_knot__records__tlsa("Mail TLSA #{title}")
+        .with_target_zone(params[:target_zone])
+        .with_rname(params[:rname])
+        .with_tlsa(params[:tlsa])
+        .with_ttl(params[:ttl])
+        .with_service(params[:tlsa_service])
     }
 
     it {

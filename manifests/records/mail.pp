@@ -55,6 +55,12 @@
 # @param caa
 #  caa records to create (using define knot::records::caa)
 #  default from knot::records::defaults::mail
+# @param tlsa
+#  tlsa records to create (using define knot::records::tlsa)
+#  default from knot::records::defaults::mail ([])
+# @param tlsa_service
+#  tlsa services to create tlsa records for (using define knot::records::tlsa)
+#  default from knot::records::defaults::mail ([])
 # @param spf_rtypes
 #  resource types to create for spf record
 # @param spf
@@ -100,6 +106,8 @@ define knot::records::mail (
   Optional[Array[Knot::Record::Srv]]         $pop3s               = undef,
   Optional[Array[Knot::Record::Srv]]         $pop3                = undef,
   Optional[Array[Knot::Record::Caa]]         $caa                 = undef,
+  Optional[Array[Knot::Record::Tlsa]]        $tlsa                = undef,
+  Optional[Array[Knot::Record::Service]]     $tlsa_service        = undef,
   Array[Enum['SPF','TXT']]                   $spf_rtypes          = ['SPF','TXT'],
   Optional[Knot::Record::Spf]                $spf                 = undef,
   Optional[Hash[String[1],Array[String[1]]]] $dkim_keys           = undef,
@@ -112,6 +120,8 @@ define knot::records::mail (
 
   $_mailserver = pick($mailserver, $knot::records::defaults::mail::mailserver)
   $_caa = pick($caa, $knot::records::defaults::mail::caa)
+  $_tlsa = pick($tlsa, $knot::records::defaults::mail::tlsa)
+  $_tlsa_service = pick($tlsa_service, $knot::records::defaults::mail::tlsa_service)
   $_submission = pick($submission, $knot::records::defaults::mail::submission)
   $_imaps = pick($imaps, $knot::records::defaults::mail::imaps)
   $_imap = pick($imap, $knot::records::defaults::mail::imap)
@@ -206,6 +216,14 @@ define knot::records::mail (
     rname       => $rname,
     srv         => $_pop3,
     service     => [{ 'port' => 'pop3', 'proto' => 'tcp' }],
+  }
+
+  knot::records::tlsa { "Mail TLSA ${title}":
+    target_zone => $target_zone,
+    rname       => $rname,
+    tlsa        => $_tlsa,
+    ttl         => $_ttl,
+    service     => $_tlsa_service,
   }
 
   $_dkim_keys.each | String[1] $k, Array[String[1]] $v | {

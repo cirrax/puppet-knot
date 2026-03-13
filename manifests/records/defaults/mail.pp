@@ -36,6 +36,10 @@
 #  autodiscover example above).
 # @param caa
 #  caa records to create (using define knot::records::caa)
+# @param tlsa
+#  tlsa records to create (using define knot::records::tlsa)
+# @param tlsa_service
+#  tlsa services to create tlsa records for (using define knot::records::tlsa)
 # @param spf
 #  SPF record to add 
 #  (see https://datatracker.ietf.org/doc/html/rfc7208)
@@ -73,6 +77,8 @@ class knot::records::defaults::mail (
   Array[Knot::Record::Srv]           $pop3s               = [],
   Array[Knot::Record::Srv]           $pop3                = [],
   Array[Knot::Record::Caa]           $caa                 = [],
+  Array[Knot::Record::Tlsa]          $tlsa                = [],
+  Array[Knot::Record::Service]       $tlsa_service        = [],
   Optional[Knot::Record::Spf]        $spf                 = undef,
   Hash[String[1],Array[String[1]]]   $dkim_keys           = {},
   Optional[String[1]]                $dkim_policy         = undef,
