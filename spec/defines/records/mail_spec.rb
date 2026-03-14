@@ -50,10 +50,15 @@ describe 'knot::records::mail' do
     }
 
     it {
+      rname_nodot = if params[:rname] == '.'
+                      'autoconfig'
+                    else
+                      "autoconfig.#{params[:rname]}"
+                    end
       if params[:autoconfig]
         is_expected.to contain_knot_record("autoconfig: #{title}")
           .with_target_zone(params[:target_zone])
-          .with_rname('autoconfig')
+          .with_rname(rname_nodot)
           .with_rttl(params[:ttl])
           .with_rtype('CNAME')
           .with_rcontent(params[:autoconfig])
@@ -125,10 +130,15 @@ describe 'knot::records::mail' do
     }
 
     it {
+      rname_nodot = if params[:rname] == '.'
+                      '_domainkey'
+                    else
+                      "_domainkey.#{params[:rname]}"
+                    end
       params[:dkim_keys].each do |k, v|
         is_expected.to contain_knot_record("dkim key #{k} for #{title}")
           .with_target_zone(params[:target_zone])
-          .with_rname("#{k}._domainkey")
+          .with_rname("#{k}.#{rname_nodot}")
           .with_rttl(params[:ttl])
           .with_rtype('TXT')
           .with_rcontent("\"#{v.join('; ')}\"")
@@ -136,10 +146,15 @@ describe 'knot::records::mail' do
     }
 
     it {
+      rname_nodot = if params[:rname] == '.'
+                      '_domainkey'
+                    else
+                      "_domainkey.#{params[:rname]}"
+                    end
       if params[:dkim_policy]
         is_expected.to contain_knot_record("dkim policy: #{title}")
           .with_target_zone(params[:target_zone])
-          .with_rname('_domainkey')
+          .with_rname(rname_nodot)
           .with_rttl(params[:ttl])
           .with_rtype('TXT')
           .with_rcontent("\"#{params[:dkim_policy]}\"")
@@ -147,10 +162,15 @@ describe 'knot::records::mail' do
     }
 
     it {
+      rname_nodot = if params[:rname] == '.'
+                      '_adsp._domainkey'
+                    else
+                      "_adsp._domainkey.#{params[:rname]}"
+                    end
       if params[:adsp_policy]
         is_expected.to contain_knot_record("adsp policy: #{title}")
           .with_target_zone(params[:target_zone])
-          .with_rname('_adsp._domainkey')
+          .with_rname(rname_nodot)
           .with_rttl(params[:ttl])
           .with_rtype('TXT')
           .with_rcontent("\"#{params[:adsp_policy]}\"")
@@ -158,10 +178,15 @@ describe 'knot::records::mail' do
     }
 
     it {
+      rname_nodot = if params[:rname] == '.'
+                      '_dmarc'
+                    else
+                      "_dmarc.#{params[:rname]}"
+                    end
       if params[:dmarc_policy]
         is_expected.to contain_knot_record("dmarc policy: #{title}")
           .with_target_zone(params[:target_zone])
-          .with_rname('_dmarc')
+          .with_rname(rname_nodot)
           .with_rttl(params[:ttl])
           .with_rtype('TXT')
           .with_rcontent("\"#{params[:dmarc_policy].join(';')}\"")

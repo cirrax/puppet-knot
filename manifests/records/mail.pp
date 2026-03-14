@@ -138,6 +138,12 @@ define knot::records::mail (
 
   $_ttl = pick($ttl, $knot::records::defaults::mail::ttl)
 
+  if $rname == '.' {
+    $rname_nodot = []
+  } else {
+    $rname_nodot = [$rname]
+  }
+
   $_mailserver.each | Integer $i, Knot::Record::Mx $v | {
     knot_record { "mail MX: ${title} (${i})":
       target_zone => $target_zone,
@@ -163,7 +169,7 @@ define knot::records::mail (
   if $_autoconfig {
     knot_record { "autoconfig: ${title}":
       target_zone => $target_zone,
-      rname       => 'autoconfig',
+      rname       => (['autoconfig'] + $rname_nodot).join('.'),
       rttl        => $_ttl,
       rtype       => 'CNAME',
       rcontent    => $_autoconfig,
@@ -229,7 +235,8 @@ define knot::records::mail (
   $_dkim_keys.each | String[1] $k, Array[String[1]] $v | {
     knot_record { "dkim key ${k} for ${title}":
       target_zone => $target_zone,
-      rname       => "${k}._domainkey",
+      # rname       => "${k}._domainkey.${rname_nodot}.",
+      rname       => ([$k, '_domainkey'] + $rname_nodot).join('.'),
       rttl        => $_ttl,
       rtype       => 'TXT',
       rcontent    => ['"', $v.join('; '), '"'].join(),
@@ -239,7 +246,7 @@ define knot::records::mail (
   if $_dkim_policy {
     knot_record { "dkim policy: ${title}":
       target_zone => $target_zone,
-      rname       => '_domainkey',
+      rname       => (['_domainkey'] + $rname_nodot).join('.'),
       rttl        => $_ttl,
       rtype       => 'TXT',
       rcontent    => "\"${_dkim_policy}\"",
@@ -249,7 +256,7 @@ define knot::records::mail (
   if $_adsp_policy {
     knot_record { "adsp policy: ${title}":
       target_zone => $target_zone,
-      rname       => '_adsp._domainkey',
+      rname       => (['_adsp', '_domainkey'] + $rname_nodot).join('.'),
       rttl        => $_ttl,
       rtype       => 'TXT',
       rcontent    => "\"${_adsp_policy}\"",
@@ -258,22 +265,16 @@ define knot::records::mail (
   if $_dmarc_policy {
     knot_record { "dmarc policy: ${title}":
       target_zone => $target_zone,
-      rname       => '_dmarc',
+      rname       => (['_dmarc'] + $rname_nodot).join('.'),
       rttl        => $_ttl,
       rtype       => 'TXT',
       rcontent    => ['"', $_dmarc_policy.join(';'), '"'].join(),
     }
   }
   if $_dmarc_authorization {
-    if $rname == '.' {
-      $_rtarget = $target_zone
-    } else {
-      $_rtarget = "${rname}.${target_zone}"
-    }
-
     knot_record { "dmarc authorization: ${title}":
       target_zone => $_dmarc_authorization['target_zone'],
-      rname       => "${_rtarget}._report._dmarc",
+      rname       => ($rname_nodot + [$target_zone ,'_report','_dmarc']).join('.'),
       rttl        => $_ttl,
       rtype       => 'TXT',
       rcontent    => "\"${_dmarc_authorization['record']}\"",
