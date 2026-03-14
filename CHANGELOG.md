@@ -1,7 +1,13 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.5.0 (13 March 2026)
+## Version: 0.6.0 (14 March 2026)
+* Merge pull request #15 from cirrax/dev_cirrax ([ab2ec12](https://github.com/cirrax/puppet-knot/commit/ab2ec12f4436302e3aeab2cad06d71b5997de98f))
+* mail records: fix mail records for hostnames !=. ([7c62e99](https://github.com/cirrax/puppet-knot/commit/7c62e99a5669439a328db549df4a20464279089f))
+* mail records: add tlsa ([a2370cc](https://github.com/cirrax/puppet-knot/commit/a2370ccb42bc6f22578339873f2294531dd1b10a))
+
+## Version: v0.5.0 (13 March 2026)
+* Release v0.5.0 ([2084f6d](https://github.com/cirrax/puppet-knot/commit/2084f6d77e34811f588a31a604c4c0935620eafc))
 * Merge pull request #14 from cirrax/dev_cirrax ([a78f5f8](https://github.com/cirrax/puppet-knot/commit/a78f5f8041eb230a750a625ff21fd48ab4dd8793))
 * add initial svcb/https record ([7db10d8](https://github.com/cirrax/puppet-knot/commit/7db10d856dd4897f5510df59cd64e5fa58ed3eba))
 * fix sshfp records (import/export) ([105403f](https://github.com/cirrax/puppet-knot/commit/105403fd2aee3561f327a63ac7a6df249537dd13))
