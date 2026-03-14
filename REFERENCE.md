@@ -555,6 +555,8 @@ The following parameters are available in the `knot::records::defaults::mail` cl
 * [`pop3s`](#-knot--records--defaults--mail--pop3s)
 * [`pop3`](#-knot--records--defaults--mail--pop3)
 * [`caa`](#-knot--records--defaults--mail--caa)
+* [`tlsa`](#-knot--records--defaults--mail--tlsa)
+* [`tlsa_service`](#-knot--records--defaults--mail--tlsa_service)
 * [`spf`](#-knot--records--defaults--mail--spf)
 * [`dkim_keys`](#-knot--records--defaults--mail--dkim_keys)
 * [`dkim_policy`](#-knot--records--defaults--mail--dkim_policy)
@@ -652,6 +654,22 @@ Default value: `[]`
 Data type: `Array[Knot::Record::Caa]`
 
 caa records to create (using define knot::records::caa)
+
+Default value: `[]`
+
+##### <a name="-knot--records--defaults--mail--tlsa"></a>`tlsa`
+
+Data type: `Array[Knot::Record::Tlsa]`
+
+tlsa records to create (using define knot::records::tlsa)
+
+Default value: `[]`
+
+##### <a name="-knot--records--defaults--mail--tlsa_service"></a>`tlsa_service`
+
+Data type: `Array[Knot::Record::Service]`
+
+tlsa services to create tlsa records for (using define knot::records::tlsa)
 
 Default value: `[]`
 
@@ -2106,6 +2124,8 @@ The following parameters are available in the `knot::records::mail` defined type
 * [`pop3s`](#-knot--records--mail--pop3s)
 * [`pop3`](#-knot--records--mail--pop3)
 * [`caa`](#-knot--records--mail--caa)
+* [`tlsa`](#-knot--records--mail--tlsa)
+* [`tlsa_service`](#-knot--records--mail--tlsa_service)
 * [`spf_rtypes`](#-knot--records--mail--spf_rtypes)
 * [`spf`](#-knot--records--mail--spf)
 * [`dkim_keys`](#-knot--records--mail--dkim_keys)
@@ -2228,6 +2248,24 @@ Data type: `Optional[Array[Knot::Record::Caa]]`
 
 caa records to create (using define knot::records::caa)
 default from knot::records::defaults::mail
+
+Default value: `undef`
+
+##### <a name="-knot--records--mail--tlsa"></a>`tlsa`
+
+Data type: `Optional[Array[Knot::Record::Tlsa]]`
+
+tlsa records to create (using define knot::records::tlsa)
+default from knot::records::defaults::mail ([])
+
+Default value: `undef`
+
+##### <a name="-knot--records--mail--tlsa_service"></a>`tlsa_service`
+
+Data type: `Optional[Array[Knot::Record::Service]]`
+
+tlsa services to create tlsa records for (using define knot::records::tlsa)
+default from knot::records::defaults::mail ([])
 
 Default value: `undef`
 
