@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'digest'
 
 describe 'knot::domain' do
   let :default_params do
@@ -11,7 +12,8 @@ describe 'knot::domain' do
       zone_serial_policy: 'increment',
       zone_nameservers: [],
       zone_subzones: {},
-      local_subzones: [] }
+      local_subzones: [],
+      catalog_entries: {}, }
   end
 
   shared_examples 'knot::domain shared examples' do
@@ -80,7 +82,22 @@ describe 'knot::domain' do
               .with_rttl(params[:zone_nameservers_ttl])
               .with_rcontent("#{params[:zone_csync][:serial]} #{params[:zone_csync][:flags]} #{params[:zone_csync][:value]}")
           end
-        else
+          params[:catalog_entries].each do |z, g|
+            uniqueid = Digest::MD5.hexdigest([z, g, params[:catalog_salt]].join(':'))
+            is_expected.to contain_knot_record("Catalog for #{z} (#{g})")
+              .with_target_zone(params[:domain])
+              .with_rname("#{uniqueid}.zones")
+              .with_rtype('PTR')
+              .with_rttl(0)
+              .with_rcontent("#{z}.")
+            is_expected.to contain_knot_record("Catalog group for #{z} (#{g})")
+              .with_target_zone(params[:domain])
+              .with_rname("group.#{uniqueid}.zones")
+              .with_rtype('TXT')
+              .with_rttl(0)
+              .with_rcontent("\"#{g}\"")
+          end
+        else     # params[:ensure] != 'present'
           params[:zone_records].each do |r|
             is_expected.not_to contain_knot_record("record #{r[:rname]}.#{params[:domain]} (#{i})")
           end
@@ -163,6 +180,20 @@ describe 'knot::domain' do
                                  zone_nameservers: ['ns1.example.org.', 'ns2.example.org.'],
                                  zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } },
                                  local_subzones: %w[blah fasel] })
+        end
+
+        it_behaves_like 'knot::domain shared examples'
+      end
+
+      context 'with a catalog zone' do
+        let(:title) { 'testdomain' }
+        let :params do
+          default_params.merge({ domain: 'catalog.zone',
+                                 manage_zone: true,
+                                 zone_records: [{ rname: 'verision', rtype: 'TXT', rcontent: '2' }],
+                                 zone_nameservers: ['ns1.example.org.'],
+                                 catalog_entries: { 'example.org' => 'secondary' },
+                                 catalog_salt: '42' })
         end
 
         it_behaves_like 'knot::domain shared examples'

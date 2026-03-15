@@ -1437,6 +1437,8 @@ The following parameters are available in the `knot::domain` defined type:
 * [`zone_csync`](#-knot--domain--zone_csync)
 * [`zone_subzones`](#-knot--domain--zone_subzones)
 * [`local_subzones`](#-knot--domain--local_subzones)
+* [`catalog_entries`](#-knot--domain--catalog_entries)
+* [`catalog_salt`](#-knot--domain--catalog_salt)
 
 ##### <a name="-knot--domain--ensure"></a>`ensure`
 
@@ -2046,6 +2048,33 @@ Any violation of above restrictions is ignored.
 remark: only relevant if $manage_zone set to true
 
 Default value: `[]`
+
+##### <a name="-knot--domain--catalog_entries"></a>`catalog_entries`
+
+Data type: `Hash[String[1],String[1]]`
+
+if this domain is a catalog zone, this parameter let's you simplify
+adding zone records to it.
+example:
+  { myzone.org => mygroup }
+ends up in records like:
+  _unique-id.zones 0 IN PTR myzone.org
+  group._unique-id.zones 0 IN TXT "mygroup"
+remark: only relevant if $manage_zone set to true
+
+Default value: `{}`
+
+##### <a name="-knot--domain--catalog_salt"></a>`catalog_salt`
+
+Data type: `String[1]`
+
+to generate the _unique-id of the catalog entries, the md5sum of
+the zone, the group and this salt is used
+per rfc, if the unique-id changes, the zone has to be deleted and
+newly rebuild. Changing this salt lets you force a reload.
+defaults to fqdn which result in a reload if name changes !
+
+Default value: `$facts['networking']['fqdn']`
 
 ### <a name="knot--records--caa"></a>`knot::records::caa`
 
