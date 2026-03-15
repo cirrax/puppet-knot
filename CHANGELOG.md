@@ -1,7 +1,12 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.6.0 (14 March 2026)
+## Version: 0.6.1 (15 March 2026)
+* Merge pull request #16 from cirrax/dev_cirrax ([accb240](https://github.com/cirrax/puppet-knot/commit/accb240b19548c6fa1468f22fa095c32cdeb37c3))
+* add possibility to create a puppet managed catalog domain ([5d20549](https://github.com/cirrax/puppet-knot/commit/5d20549c3315747e2c153cec30cd6a8b86d2e83e))
+
+## Version: v0.6.0 (14 March 2026)
+* Release v0.6.0 ([cc53646](https://github.com/cirrax/puppet-knot/commit/cc5364660e9806c502cf01c71b4d3507449728fe))
 * Merge pull request #15 from cirrax/dev_cirrax ([ab2ec12](https://github.com/cirrax/puppet-knot/commit/ab2ec12f4436302e3aeab2cad06d71b5997de98f))
 * mail records: fix mail records for hostnames !=. ([7c62e99](https://github.com/cirrax/puppet-knot/commit/7c62e99a5669439a328db549df4a20464279089f))
 * mail records: add tlsa ([a2370cc](https://github.com/cirrax/puppet-knot/commit/a2370ccb42bc6f22578339873f2294531dd1b10a))
