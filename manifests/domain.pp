@@ -193,6 +193,21 @@
 #   - manage_zone is set to true for both domains
 #   Any violation of above restrictions is ignored. 
 #   remark: only relevant if $manage_zone set to true
+# @param catalog_entries
+#   if this domain is a catalog zone, this parameter let's you simplify
+#   adding zone records to it.
+#   example:
+#     { myzone.org => mygroup }
+#   ends up in records like:
+#     _unique-id.zones 0 IN PTR myzone.org
+#     group._unique-id.zones 0 IN TXT "mygroup"
+#   remark: only relevant if $manage_zone set to true
+# @param catalog_salt
+#   to generate the _unique-id of the catalog entries, the md5sum of
+#   the zone, the group and this salt is used
+#   per rfc, if the unique-id changes, the zone has to be deleted and
+#   newly rebuild. Changing this salt lets you force a reload.
+#   defaults to fqdn which result in a reload if name changes !
 #
 define knot::domain (
   Enum['absent', 'present']                                             $ensure               = 'present',
@@ -265,6 +280,8 @@ define knot::domain (
   Optional[Knot::Record::Csync]                                         $zone_csync           = undef,
   Hash[String[1],Knot::Subzone]                                         $zone_subzones        = {},
   Array[String[1]]                                                      $local_subzones       = [],
+  Hash[String[1],String[1]]                                             $catalog_entries      = {},
+  String[1]                                                             $catalog_salt         = $facts['networking']['fqdn'],
 ) {
   knot::add_conf { $domain:
     ensure                   => $ensure,
@@ -406,6 +423,23 @@ define knot::domain (
           rcontent    => $ds,
         }
       }
+    }
+  }
+  $catalog_entries.each | String[1] $z, String[1] $gr | {
+    $unique_id = md5([$z,$gr,$catalog_salt].join(':'))
+    knot_record { "Catalog for ${z} (${gr})":
+      target_zone => $domain,
+      rname       => "${unique_id}.zones",
+      rtype       => 'PTR',
+      rttl        => 0,
+      rcontent    => "${z}.",
+    }
+    knot_record { "Catalog group for ${z} (${gr})":
+      target_zone => $domain,
+      rname       => "group.${unique_id}.zones",
+      rtype       => 'TXT',
+      rttl        => 0,
+      rcontent    => "\"${gr}\"",
     }
   }
 }
