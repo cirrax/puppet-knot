@@ -1,7 +1,13 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.6.1 (15 March 2026)
+## Version: 0.6.2 (5 October 2026)
+* adapt REFERENCE ([87c5c1d](https://github.com/cirrax/puppet-knot/commit/87c5c1d14835966655fc6af97dfa1842301bedab))
+* fix rubocops ([b5bf68b](https://github.com/cirrax/puppet-knot/commit/b5bf68b8f0853d140bf5b5ae79b85c1eecef44c5))
+* Knot::Subtypes::Size may also be an Integer ([db07ec4](https://github.com/cirrax/puppet-knot/commit/db07ec47796b32f5b546f84788b849c99ff72a3e))
+
+## Version: v0.6.1 (15 March 2026)
+* Release v0.6.1 ([6697ed0](https://github.com/cirrax/puppet-knot/commit/6697ed011f58ad0405574a32ec1d7b72ab1642a9))
 * Merge pull request #16 from cirrax/dev_cirrax ([accb240](https://github.com/cirrax/puppet-knot/commit/accb240b19548c6fa1468f22fa095c32cdeb37c3))
 * add possibility to create a puppet managed catalog domain ([5d20549](https://github.com/cirrax/puppet-knot/commit/5d20549c3315747e2c153cec30cd6a8b86d2e83e))
 
