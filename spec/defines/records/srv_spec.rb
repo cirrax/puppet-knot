@@ -58,7 +58,7 @@ describe 'knot::records::srv' do
             target_zone: 'example.org',
             srv: [{ priority: 10, weight: 10, target_port: 10, target: 'test.test.com' }],
             service: [{ port: 111, proto: 'tcp' }],
-            rname: 'test'
+            rname: 'test',
           )
         end
 
@@ -72,7 +72,7 @@ describe 'knot::records::srv' do
             target_zone: 'example.org',
             srv: [{ priority: 10, weight: 10, target_port: 10, target: 'test.test.com' }],
             service: [{ port: 111, proto: 'tcp' }],
-            rname: '.'
+            rname: '.',
           )
         end
 

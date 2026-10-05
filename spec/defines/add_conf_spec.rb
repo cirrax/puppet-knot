@@ -6,7 +6,7 @@ describe 'knot::add_conf' do
   let :default_params do
     { ensure: 'present',
       filename: 'example.net.conf',
-      config_dir: '/etc/knot/conf.d' }
+      config_dir: '/etc/knot/conf.d', }
   end
 
   shared_examples 'knot::add_conf shared examples' do

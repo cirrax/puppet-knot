@@ -97,7 +97,7 @@ describe 'knot::domain' do
               .with_rttl(0)
               .with_rcontent("\"#{g}\"")
           end
-        else     # params[:ensure] != 'present'
+        else # params[:ensure] != 'present'
           params[:zone_records].each do |r|
             is_expected.not_to contain_knot_record("record #{r[:rname]}.#{params[:domain]} (#{i})")
           end
@@ -179,7 +179,7 @@ describe 'knot::domain' do
                                  zone_records: [{ rname: 'test', rcontent: '1.1.1.1' }, { rname: 'test', rtype: 'AAAA', rcontent: '::1' }],
                                  zone_nameservers: ['ns1.example.org.', 'ns2.example.org.'],
                                  zone_subzones: { 'sub' => { 'nameservers' => ['ns1.example.org'], 'trust_ds' => ['1 1 1 ttt'] } },
-                                 local_subzones: %w[blah fasel] })
+                                 local_subzones: %w[blah fasel], })
         end
 
         it_behaves_like 'knot::domain shared examples'
@@ -193,7 +193,7 @@ describe 'knot::domain' do
                                  zone_records: [{ rname: 'verision', rtype: 'TXT', rcontent: '2' }],
                                  zone_nameservers: ['ns1.example.org.'],
                                  catalog_entries: { 'example.org' => 'secondary' },
-                                 catalog_salt: '42' })
+                                 catalog_salt: '42', })
         end
 
         it_behaves_like 'knot::domain shared examples'

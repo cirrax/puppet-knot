@@ -245,7 +245,7 @@ describe 'knot::records::mail' do
             dkim_policy: 'dkim=all; t=s',
             adsp_policy: 'o=-',
             dmarc_policy: ['p=quarantine', 'adkim=s', 'aspf=s', 'ruf=mailto:dmarc@somewhere.org'],
-            dmarc_authorization: { 'target_zone' => 'somewhere.org', 'record' => 'v=DMARC1' }
+            dmarc_authorization: { 'target_zone' => 'somewhere.org', 'record' => 'v=DMARC1' },
           )
         end
 
@@ -273,7 +273,7 @@ describe 'knot::records::mail' do
             dkim_policy: 'dkim=all; t=s',
             adsp_policy: 'o=-',
             dmarc_policy: ['p=quarantine', 'adkim=s', 'aspf=s', 'ruf=mailto:dmarc@somewhere.org'],
-            dmarc_authorization: { 'target_zone' => 'somewhere.org', 'record' => 'v=DMARC1' }
+            dmarc_authorization: { 'target_zone' => 'somewhere.org', 'record' => 'v=DMARC1' },
           )
         end
 

@@ -82,7 +82,7 @@ Puppet::Type.newtype(:knot_zone_private) do
     def change_to_s(current, desire)
       if @resource[:show_diff]
         ['', ((desire.split(%r{\n+}) - current.split(%r{\n+})).map { |k| "#{k}+" } +
-        (current.split(%r{\n+}) - desire.split(%r{\n+})).map { |k| "#{k}-" }).sort.map { |k| " #{k[-1]} #{k[0..-2]} " }, ''].join("\n")
+        (current.split(%r{\n+}) - desire.split(%r{\n+})).map { |k| "#{k}-" }).sort.map { |k| " #{k[-1]} #{k[0..-2]} " }, '',].join("\n")
       else
         "{md5}#{Digest::MD5.hexdigest(current.to_s)} to: {md5}#{Digest::MD5.hexdigest(desire.to_s)}"
       end

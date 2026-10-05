@@ -19,7 +19,7 @@ describe 'knot::records::caa' do
           .with_target_zone(params[:target_zone])
           .with_rname(params[:rname])
           .with_rttl(params[:ttl])
-          .with_rcontent("#{caa[:flags]} #{caa[:tag]} \"#{caa[:value]}\" ")  # space at the end is needed !
+          .with_rcontent("#{caa[:flags]} #{caa[:tag]} \"#{caa[:value]}\" ") # space at the end is needed !
         i += 1
       end
     }

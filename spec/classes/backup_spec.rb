@@ -10,7 +10,7 @@ describe 'knot::backup' do
       group: 'knot',
       mode: '0700',
       timer: ['OnCalendar=*-*-* 01:00:00', 'Persistent=true'],
-      key_stati_file: '/var/lib/knot-backup/current-key-list.txt'
+      key_stati_file: '/var/lib/knot-backup/current-key-list.txt',
     }
   end
 
@@ -69,7 +69,7 @@ describe 'knot::backup' do
             timer: ['OnCalender=\never'],
             list_keys_script: '/usr/local/bin/script',
             enable: true,
-            active: true
+            active: true,
           )
         end
 

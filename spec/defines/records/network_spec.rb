@@ -72,7 +72,7 @@ describe 'knot::records::network' do
             target_zone: 'example.org',
             hostlist: { 'host' => { ipv4: '1.1.1.1', ipv6: '::1' } },
             rev4_target_split: 1,
-            rev6_target_split: 21
+            rev6_target_split: 21,
           )
         end
 

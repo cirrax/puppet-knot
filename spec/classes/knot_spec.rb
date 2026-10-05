@@ -53,7 +53,7 @@ describe 'knot' do
     }
 
     it {
-      params[:domains].each do |dom, _vals|
+      params[:domains].each_key do |dom|
         is_expected.to contain_knot__domain(dom)
       end
     }
@@ -74,7 +74,7 @@ describe 'knot' do
       context 'with non defaults' do
         let :params do
           default_params.merge(
-            domains: { 'example.net' => {} }
+            domains: { 'example.net' => {} },
           )
         end
 

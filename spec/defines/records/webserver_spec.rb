@@ -87,7 +87,7 @@ describe 'knot::records::webserver' do
             ttl: 4242,
             caa: [{ 'flags' => 0, 'tag' => 'issue', 'value' => 'letsencrypt.org' }],
             tlsa: [{ 'usage' => 3, 'selector' => 1, 'matching' => 1, 'value' => 'abc34' }],
-            tlsa_service: [{ 'port' => 443, 'proto' => 'tcp' }]
+            tlsa_service: [{ 'port' => 443, 'proto' => 'tcp' }],
           )
         end
 

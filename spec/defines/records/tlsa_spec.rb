@@ -58,7 +58,7 @@ describe 'knot::records::tlsa' do
             target_zone: 'example.org',
             tlsa: [{ usage: 3, selector: 1, matching: 1, value: 'abc34' }],
             service: [{ port: 111, proto: 'tcp' }],
-            rname: 'test'
+            rname: 'test',
           )
         end
 
@@ -72,7 +72,7 @@ describe 'knot::records::tlsa' do
             target_zone: 'example.org',
             tlsa: [{ usage: 3, selector: 1, matching: 1, value: 'abc34' }],
             service: [{ port: 111, proto: 'tcp' }],
-            rname: '.'
+            rname: '.',
           )
         end
 

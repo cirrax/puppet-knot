@@ -4,7 +4,7 @@
 #
 require 'tempfile'
 Puppet::Type.type(:knot_zone_private).provide(
-  :knotc
+  :knotc,
 ) do
   desc "A provider for the resource type `knot_zone`,
         which manages a zone on knot dns
@@ -108,7 +108,7 @@ Puppet::Type.type(:knot_zone_private).provide(
       end
     end).compact
     glues = glue_records
-    if (glues & @records) == glues
+    if @records.allbits?(glues)
       "#{(@records - glues).sort.join("\n")}\n"
     else
       "#{((@records - glues) + ['changing glue records']).sort.join("\n")}\n"
