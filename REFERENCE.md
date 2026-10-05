@@ -3115,7 +3115,6 @@ The following parameters are available in the `knot_zone_private` type.
 * [`local_subzones`](#-knot_zone_private--local_subzones)
 * [`manage_records`](#-knot_zone_private--manage_records)
 * [`name`](#-knot_zone_private--name)
-* [`provider`](#-knot_zone_private--provider)
 * [`serial_policy`](#-knot_zone_private--serial_policy)
 * [`show_diff`](#-knot_zone_private--show_diff)
 
@@ -3145,11 +3144,6 @@ Default value: `true`
 namevar
 
 name of the zone name as namevar
-
-##### <a name="-knot_zone_private--provider"></a>`provider`
-
-The specific backend to use for this `knot_zone_private` resource. You will seldom need to specify this --- Puppet will
-usually discover the appropriate provider for your platform.
 
 ##### <a name="-knot_zone_private--serial_policy"></a>`serial_policy`
 
