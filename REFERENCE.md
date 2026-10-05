@@ -3966,7 +3966,7 @@ Alias of `String[1]`
 subtype: Number of bytes, an integer with a
 possible size multiplier suffix (B ~ 1, K ~ 1024, M ~ 1024^2 or G ~ 1024^3)
 
-Alias of `String[1]`
+Alias of `Variant[String[1], Integer]`
 
 ### <a name="Knot--Subtypes--Time"></a>`Knot::Subtypes::Time`
 
