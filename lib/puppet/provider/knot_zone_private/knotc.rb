@@ -108,7 +108,8 @@ Puppet::Type.type(:knot_zone_private).provide(
       end
     end).compact
     glues = glue_records
-    if @records.allbits?(glues)
+    # rubocop:disable-next Style/BitwisePredicate
+    if (glues & @records) == glues
       "#{(@records - glues).sort.join("\n")}\n"
     else
       "#{((@records - glues) + ['changing glue records']).sort.join("\n")}\n"
