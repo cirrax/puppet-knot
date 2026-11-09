@@ -208,6 +208,21 @@
 #   per rfc, if the unique-id changes, the zone has to be deleted and
 #   newly rebuild. Changing this salt lets you force a reload.
 #   defaults to fqdn which result in a reload if name changes !
+# @param local_remote
+#   Definitions of remote servers for outgoing connections
+#   Remark: this is a local config, that is only available
+#   in the domain config (same config file). The id needs
+#   to be unique across all knot configs.
+# @param local_remotes
+#   Definitions of groups of remote servers
+#   Remark: this is a local config, that is only available
+#   in the domain config (same config file). The id needs
+#   to be unique across all knot configs.
+# @param local_template
+#   shareable zone settings
+#   Remark: this is a local config, that is only available
+#   in the domain config (same config file). The id needs
+#   to be unique across all knot configs.
 #
 define knot::domain (
   Enum['absent', 'present']                                             $ensure               = 'present',
@@ -282,9 +297,15 @@ define knot::domain (
   Array[String[1]]                                                      $local_subzones       = [],
   Hash[String[1],String[1]]                                             $catalog_entries      = {},
   String[1]                                                             $catalog_salt         = $facts['networking']['fqdn'],
+  Optional[Array[Knot::Remote]]                                         $local_remote         = undef,
+  Optional[Array[Knot::Remotes]]                                        $local_remotes        = undef,
+  Optional[Array[Knot::Template]]                                       $local_template       = undef,
 ) {
   knot::add_conf { $domain:
     ensure                   => $ensure,
+    remote                   => $local_remote,
+    remotes                  => $local_remotes,
+    template                 => $local_template,
     zone                     => [
       'comment'              => $comment,
       'domain'               => $domain,

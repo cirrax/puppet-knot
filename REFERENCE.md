@@ -20,7 +20,7 @@
 ### Defined types
 
 * [`knot::add_conf`](#knot--add_conf): additional config files to add to knot eg for zones
-* [`knot::domain`](#knot--domain): shortcut to add a domain configuration to the config: - adds a zone to the config file (uses knot::add_conf)  for the config file parameters 
+* [`knot::domain`](#knot--domain): shortcut to add a domain configuration to the config: - adds a zone to the config file (uses knot::add_conf)  for the config file parameters
 * [`knot::records::caa`](#knot--records--caa): add caa records to the domain
 * [`knot::records::mail`](#knot--records--mail): add mail dns records to the domain
 * [`knot::records::network`](#knot--records--network): convert a hash into dns records
@@ -77,7 +77,7 @@
 * [`Knot::Subtypes::Dname`](#Knot--Subtypes--Dname): subtype: Domain name
 * [`Knot::Subtypes::Hexstr`](#Knot--Subtypes--Hexstr): subtype: Hexadecimal string (with 0x prefix)
 * [`Knot::Subtypes::Size`](#Knot--Subtypes--Size): subtype: Number of bytes, an integer with a possible size multiplier suffix (B ~ 1, K ~ 1024, M ~ 1024^2 or G ~ 1024^3)
-* [`Knot::Subtypes::Time`](#Knot--Subtypes--Time): subtype: Number of seconds, an integer  with a possible time multiplier suffix (s ~ 1, m ~ 60, h ~ 3600, d ~ 24 * 3600, w ~ 7 * 24 * 3600, M 
+* [`Knot::Subtypes::Time`](#Knot--Subtypes--Time): subtype: Number of seconds, an integer  with a possible time multiplier suffix (s ~ 1, m ~ 60, h ~ 3600, d ~ 24 * 3600, w ~ 7 * 24 * 3600, M
 * [`Knot::Subzone`](#Knot--Subzone): a subzone definition
 * [`Knot::Template`](#Knot--Template): template configuration section
 * [`Knot::Xdp`](#Knot--Xdp): xdp configuration section
@@ -1439,6 +1439,9 @@ The following parameters are available in the `knot::domain` defined type:
 * [`local_subzones`](#-knot--domain--local_subzones)
 * [`catalog_entries`](#-knot--domain--catalog_entries)
 * [`catalog_salt`](#-knot--domain--catalog_salt)
+* [`local_remote`](#-knot--domain--local_remote)
+* [`local_remotes`](#-knot--domain--local_remotes)
+* [`local_template`](#-knot--domain--local_template)
 
 ##### <a name="-knot--domain--ensure"></a>`ensure`
 
@@ -2075,6 +2078,39 @@ newly rebuild. Changing this salt lets you force a reload.
 defaults to fqdn which result in a reload if name changes !
 
 Default value: `$facts['networking']['fqdn']`
+
+##### <a name="-knot--domain--local_remote"></a>`local_remote`
+
+Data type: `Optional[Array[Knot::Remote]]`
+
+Definitions of remote servers for outgoing connections
+Remark: this is a local config, that is only available
+in the domain config (same config file). The id needs
+to be unique across all knot configs.
+
+Default value: `undef`
+
+##### <a name="-knot--domain--local_remotes"></a>`local_remotes`
+
+Data type: `Optional[Array[Knot::Remotes]]`
+
+Definitions of groups of remote servers
+Remark: this is a local config, that is only available
+in the domain config (same config file). The id needs
+to be unique across all knot configs.
+
+Default value: `undef`
+
+##### <a name="-knot--domain--local_template"></a>`local_template`
+
+Data type: `Optional[Array[Knot::Template]]`
+
+shareable zone settings
+Remark: this is a local config, that is only available
+in the domain config (same config file). The id needs
+to be unique across all knot configs.
+
+Default value: `undef`
 
 ### <a name="knot--records--caa"></a>`knot::records::caa`
 
@@ -3195,7 +3231,7 @@ calculate the host part for a reverse PTR record
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 knot::reverse4_host('1.2.3.4',2) => '4.3'
@@ -3209,7 +3245,7 @@ Returns: `String[1]` the host
 
 ##### Examples
 
-###### 
+######
 
 ```puppet
 knot::reverse4_host('1.2.3.4',2) => '4.3'
@@ -3237,7 +3273,7 @@ calculate the target domain for a reverse PTR record
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 knot::reverse4_target('1.2.3.4',2) => 2.1.in-addr.arpa
@@ -3251,7 +3287,7 @@ Returns: `String[1]` the target domain
 
 ##### Examples
 
-###### 
+######
 
 ```puppet
 knot::reverse4_target('1.2.3.4',2) => 2.1.in-addr.arpa
@@ -3279,7 +3315,7 @@ calculate the target domain for a reverse PTR record
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 knot::reverse6_host('::1',2) => '1.0'
@@ -3293,7 +3329,7 @@ Returns: `String[1]` the host
 
 ##### Examples
 
-###### 
+######
 
 ```puppet
 knot::reverse6_host('::1',2) => '1.0'
@@ -3321,7 +3357,7 @@ calculate the target domain for a reverse PTR record
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 knot::reverse6_target('::1',21) => '0.0.0.0.0.0.0.d.c.b.a.ip6.arpa'
@@ -3335,7 +3371,7 @@ Returns: `String[1]` the target domain
 
 ##### Examples
 
-###### 
+######
 
 ```puppet
 knot::reverse6_target('::1',21) => '0.0.0.0.0.0.0.d.c.b.a.ip6.arpa'
@@ -4142,4 +4178,3 @@ Struct[{
   'module'               => Optional[Variant[Array[String[1]],String[1]]],
 }]
 ```
-
