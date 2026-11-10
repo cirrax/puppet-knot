@@ -1,7 +1,12 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.7.0 (10 November 2026)
+## Version: 0.7.1 (10 November 2026)
+* update metadata ([c0c461d](https://github.com/cirrax/puppet-knot/commit/c0c461d2b3c4bd72d333e331d3b6b05542d4b7ea))
+* add trash-delay and dnssec-jitter policy config option ([6483d68](https://github.com/cirrax/puppet-knot/commit/6483d6865b1eef56639ce1d7c17bbcbe1bc2162b))
+
+## Version: v0.7.0 (10 November 2026)
+* Release v0.7.0 ([33cb881](https://github.com/cirrax/puppet-knot/commit/33cb8816643193e2930fc27cc90dcfc3f0993cd8))
 * revert rubocop fix Style/BitwisePredicate, flag it. ([65707c6](https://github.com/cirrax/puppet-knot/commit/65707c67aa44cf19cec3af658313e4f22ff85c91))
 * add additional local parameters to the domain define ([5bc244d](https://github.com/cirrax/puppet-knot/commit/5bc244d0736f64e4f45ad1c58c7d170367abd547))
 
