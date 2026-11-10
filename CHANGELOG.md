@@ -1,7 +1,12 @@
 # Changelog cirrax-knot
 
 
-## Version: 0.6.2 (5 October 2026)
+## Version: 0.7.0 (10 November 2026)
+* revert rubocop fix Style/BitwisePredicate, flag it. ([65707c6](https://github.com/cirrax/puppet-knot/commit/65707c67aa44cf19cec3af658313e4f22ff85c91))
+* add additional local parameters to the domain define ([5bc244d](https://github.com/cirrax/puppet-knot/commit/5bc244d0736f64e4f45ad1c58c7d170367abd547))
+
+## Version: v0.6.2 (5 October 2026)
+* Release v0.6.2 ([4b343b3](https://github.com/cirrax/puppet-knot/commit/4b343b32736cefc3577dc9d202a76c54abcc6ebd))
 * adapt REFERENCE ([87c5c1d](https://github.com/cirrax/puppet-knot/commit/87c5c1d14835966655fc6af97dfa1842301bedab))
 * fix rubocops ([b5bf68b](https://github.com/cirrax/puppet-knot/commit/b5bf68b8f0853d140bf5b5ae79b85c1eecef44c5))
 * Knot::Subtypes::Size may also be an Integer ([db07ec4](https://github.com/cirrax/puppet-knot/commit/db07ec47796b32f5b546f84788b849c99ff72a3e))
